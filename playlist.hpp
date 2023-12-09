@@ -2,7 +2,7 @@
 #define PLAYLIST_HPP_
 #include <string>
 #include <vector>
-#include "musica.h"
+#include "musica.hpp"
 
 class Playlist {
     private:

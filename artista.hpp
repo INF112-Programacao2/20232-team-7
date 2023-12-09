@@ -1,12 +1,13 @@
-#ifndef ARTIST_HPP
-#define ARTIST_HPP
+#ifndef ARTISTA_HPP
+#define ARTISTA_HPP
 
 #include <string>
 #include <vector>
 
 #include "usuario_premium.hpp"
-#include "musica.h"
-#include "album.h"
+#include "musica.hpp"
+#include "playlist.hpp"
+#include "album.hpp"
 
 class Artista : public Usuario_Premium {
     private:
@@ -18,6 +19,7 @@ class Artista : public Usuario_Premium {
 
         void publicar_musica();
         void publicar_album();
+        void adicionar_musica_album();
 };
 
 #endif

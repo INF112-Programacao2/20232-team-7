@@ -1,3 +1,6 @@
+#ifndef ALBUM_HPP
+#define ALBUM_HPP
+
 #include <string>
 #include <vector>
 #include "musica.hpp"
@@ -26,3 +29,5 @@ class Album{
 
         std::string get_generos();
 };
+
+#endif

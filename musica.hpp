@@ -1,3 +1,6 @@
+#ifndef MUSICA_HPP
+#define MUSICA_HPP
+
 #include <string>
 
 class Musica{
@@ -22,3 +25,5 @@ class Musica{
 
         bool get_explicito();
 };
+
+#endif
