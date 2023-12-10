@@ -7,9 +7,14 @@
 #include "playlist.hpp"
 #include "artista.hpp"
 
+std::vector<Usuario*> usuarios_cadastrados;
+
 Usuario::Usuario(std::string email, std::string nome) {
     _email = email;
     _nome_usuario = nome;
+    _premium = false;
+    _artista = false;
+    usuarios_cadastrados.push_back(this);
 }
 
 Usuario::~Usuario() {
@@ -33,6 +38,14 @@ std::string Usuario::get_email() {
 
 void Usuario::set_email(std::string email) {
     _email = email;
+}
+
+bool Usuario::get_premium(){
+    return _premium;
+}
+
+bool Usuario::get_artista(){
+    return _artista;
 }
 
 int Usuario::get_quant_musicas_curtidas() {
@@ -89,4 +102,17 @@ void Usuario::tocar_playlist(Playlist *playlist){
 
 void Usuario::definir_musica_perfil(Musica *musica) {
 
+}
+
+Usuario* Usuario::encontrar_usuario(std::string nome){
+    bool encontrou = false;
+    for (int i = 0; i < usuarios_cadastrados.size(); i++){
+        if(nome == usuarios_cadastrados[i]->get_nome()){
+            encontrou = true;
+            return usuarios_cadastrados[i];
+        }
+    }
+    if (!encontrou){
+        throw std::invalid_argument("Este usuário não está cadastrado");
+    }
 }

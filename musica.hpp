@@ -1,13 +1,14 @@
-#ifndef MUSICA_HPP
-#define MUSICA_HPP
+#ifndef MUSICA_HPP_
+#define MUSICA_HPP_
 
 #include <string>
+#include <vector>
 
 class Musica{
     private:
+        static std::vector<Musica*> musicas_cadastradas;
         std::string _titulo;
         int _segundos;
-        static int _views;
         bool _explicito;
         std::string _generos;
     public:
@@ -19,11 +20,9 @@ class Musica{
 
         int get_segundos();
 
-        void set_views();
-
-        static int get_views();
-
         bool get_explicito();
+
+        static Musica* encontrar_musica(std::string nome);
 };
 
 #endif

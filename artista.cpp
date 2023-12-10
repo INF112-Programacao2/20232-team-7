@@ -5,8 +5,14 @@
 
 #include "artista.hpp"
 
+std::vector<Artista*> artistas_cadastrados;
 
-Artista::Artista(std::string email, std::string nome) : Usuario_Premium(email, nome) {}
+Artista::Artista(std::string email, std::string nome) : Usuario_Premium(email, nome) {
+    this->_artista = true;
+    std::vector<Musica*> _musicas_publicadas;
+    std::vector<Album*> _albuns_publicados;
+    artistas_cadastrados.push_back(this);
+}
 
 Artista::~Artista() {
     _musicas_publicadas.clear();
@@ -15,6 +21,22 @@ Artista::~Artista() {
     _artistas_curtidos.clear();
     _playlists_curtidas.clear();
     _playlists.clear();
+}
+
+int Artista::get_quant_musicas_publicadas(){
+    return _musicas_publicadas.size();
+}
+
+Musica* Artista::get_musica_publicada(int posicao){
+    return _musicas_publicadas[posicao];
+}
+
+int Artista::get_quant_albuns_publicados(){
+    return _albuns_publicados.size();
+}
+
+Album* Artista::get_album_publicado(int posicao){
+    return _albuns_publicados[posicao];
 }
 
 void Artista::publicar_musica() {
@@ -87,4 +109,17 @@ void Artista::adicionar_musica_album() {
 
     _albuns_publicados[pos_album]->set_musica(_musicas_publicadas[pos_musica]);
     std::cout << "Musica adicionada ao album com sucesso!!" << std::endl;
+}
+
+Artista* Artista::encontrar_artista(std::string nome){
+    bool encontrou = false;
+    for (int i = 0; i < artistas_cadastrados.size(); i++){
+        if(nome == artistas_cadastrados[i]->get_nome()){
+            encontrou = true;
+            return artistas_cadastrados[i];
+        }
+    }
+    if (!encontrou){
+        throw std::invalid_argument("Este artista não está cadastrado");
+    }
 }

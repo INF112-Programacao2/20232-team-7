@@ -28,7 +28,7 @@ int Perfil::get_quant_seguindo(){
 void Perfil::exibir_seguidores(){
     if (_seguidores.size() != 0){
         for (int i = 0; i < _seguidores.size(); i++){
-            _seguidores[i]->exibir_infos();
+            //_seguidores[i]->exibir_infos();
         }
     } else {
         std::cout << "Não há seguidores.\n";
@@ -38,7 +38,7 @@ void Perfil::exibir_seguidores(){
 void Perfil::exibir_seguindo(){
     if (_seguindo.size() != 0){
         for (int i = 0; i < _seguindo.size(); i++){
-            _seguindo[i]->exibir_infos();
+           // _seguindo[i]->exibir_infos();
         }
     } else {
         std::cout << "Não está seguindo ninguém.\n";
@@ -73,5 +73,5 @@ void Perfil::exibir_playlists(){
     }
 }
 void Perfil::exibir_usuario(){
-    _usuario->exibir_infos();
+   // _usuario->exibir_infos();
 }

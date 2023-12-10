@@ -6,6 +6,7 @@
 
 class Playlist {
     private:
+        static std::vector<Playlist*> playlists_cadastradas;
         std::string _nome;
         std::vector<Musica*> _musicas;
         bool _visibilidade;
@@ -20,6 +21,7 @@ class Playlist {
         Musica* get_musica(int posicao);
         void adicionar_musica(Musica* musica);
         void apagar_musica(int posicao);
+        static Playlist* encontrar_playlist(std::string nome);
 
 };
 

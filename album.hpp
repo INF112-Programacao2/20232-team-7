@@ -1,5 +1,5 @@
-#ifndef ALBUM_HPP
-#define ALBUM_HPP
+#ifndef ALBUM_HPP_
+#define ALBUM_HPP_
 
 #include <string>
 #include <vector>
@@ -9,7 +9,6 @@ class Album{
     private:
         std::string _titulo;
         std::vector<Musica*>_musicas;
-        // imagem do álbum
         int _duracao;
         std::string _generos;
     public:

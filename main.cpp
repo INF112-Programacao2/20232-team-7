@@ -10,26 +10,28 @@
 #include "album.hpp"
 #include "playlist.hpp"
 #include "perfil.hpp"
+#include "controle.hpp"
 
 int main() {
     std::vector<Usuario*> usuarios;
     std::vector<Usuario_Premium*> usuarios_premium;
     std::vector<Artista*> artistas;
+    Controle comptify;
  
-    char option;
+    char opcao;
 
     while(true) {
-        bool controller = true;
+        bool controle = true;
         while (true) {
             try {
                 std::cout << "Escolha uma opção: " << std::endl;
                 std::cout << "1- Criar novo usuario" << std::endl;
                 std::cout << "2- Acessar Computify" << std::endl;
                 std::cout << "x- Fechar programa" << std::endl;
-                std::cin >> option;
+                std::cin >> opcao;
                 std::cout << std::endl;
 
-                if (option != '1' && option != '2' && option != 'x' && option != 'X') {
+                if (opcao != '1' && opcao != '2' && opcao != 'x' && opcao != 'X') {
                     throw std::invalid_argument("Opcao invalida. Digite novamente!");
                 }
                 break;
@@ -41,8 +43,8 @@ int main() {
         }
 
         // Menu de criação de usuarios.
-        if (option == '1') {
-            while (controller) {
+        if (opcao == '1') {
+            while (controle) {
                 std::string nome_usuario;
                 std::string email;
 
@@ -53,10 +55,10 @@ int main() {
                         std::cout << "2- Premium" << std::endl;
                         std::cout << "3- Artista" << std::endl;
                         std::cout << "x- Voltar" << std::endl;
-                        std::cin >> option;
+                        std::cin >> opcao;
                         std::cout << std::endl;
 
-                        if (option != '1' && option != '2' && option != '3' && option != 'x' && option != 'X') {
+                        if (opcao != '1' && opcao != '2' && opcao != '3' && opcao != 'x' && opcao != 'X') {
                             throw std::invalid_argument("Opcao invalida. Digite novamente!");
                         }
                         break;
@@ -67,50 +69,40 @@ int main() {
                     std::cout << std::endl;
                 }
 
-                if (option == '1') {
-                    std::cout << "Digite seu nome de usuario: " << std::endl;
-                    std::cin >> nome_usuario;
-                    std::cout << "Digite seu e-mail: " << std::endl;
-                    std::cin >> email;
+                std::cout << "Digite seu nome de usuario: " << std::endl;
+                std::cin >> nome_usuario;
+                std::cout << "Digite seu e-mail: " << std::endl;
+                std::cin >> email;
 
+                if (opcao == '1') {
                     usuarios.push_back(new Usuario(email, nome_usuario));
                 }
-                else if (option == '2') {
-                    std::cout << "Digite seu nome de usuario: " << std::endl;
-                    std::cin >> nome_usuario;
-                    std::cout << "Digite seu e-mail: " << std::endl;
-                    std::cin >> email;
-
+                else if (opcao == '2') {
                     usuarios_premium.push_back(new Usuario_Premium(email, nome_usuario));
                     usuarios.push_back(usuarios_premium[usuarios_premium.size() - 1]);
                 }
-                else if (option == '3') {
-                    std::cout << "Digite seu nome de usuario: " << std::endl;
-                    std::cin >> nome_usuario;
-                    std::cout << "Digite seu e-mail: " << std::endl;
-                    std::cin >> email;
-
+                else if (opcao == '3') {
                     artistas.push_back(new Artista(email, nome_usuario));
                     usuarios_premium.push_back(artistas[artistas.size()]);
                     usuarios.push_back(artistas[artistas.size() - 1]);
                 }
-                else if (option == 'x' || option == 'X') {
-                    option = '0';
+                else if (opcao == 'x' || opcao == 'X') {
+                    opcao = '0';
                     break;
                 }
 
                 std::cout << "Usuario cadastrado com sucesso!!!" << std::endl;
                 std::cout << std::endl;
-                option = '0';
-                controller = false;
+                opcao = '0';
+                controle = false;
             }
         }
 
-        else if (option == '2') {
-            while (controller) {
+        else if (opcao == '2') {
+            while (controle) {
                 if (usuarios.size() > 0) {
                     int cont = 0;
-                    int position;
+                    int posicao;
                     std::string email;
 
                     while (true) {
@@ -121,7 +113,7 @@ int main() {
 
                             for (int i = 0; i < usuarios.size(); i++) {
                                 if (usuarios[i]->get_email() == email) {
-                                    position = i;
+                                    posicao = i;
                                     break;
                                 }
                                 else {
@@ -141,22 +133,29 @@ int main() {
                         }
                     }
 
-                    std::cout << "Ola " << usuarios[position]->get_nome() << ", seja bem-vindo ao Computify!! :)" << std::endl;
+                    std::cout << "Ola " << usuarios[posicao]->get_nome() << ", seja bem-vindo ao Computify!! :)" << std::endl;
 
                     std::cout << "O que deseja fazer hoje? " << std::endl;
-
-                    controller = false;
+                    
+                    if (usuarios[posicao]->get_artista()){
+                        comptify.comptify((Artista*) usuarios[posicao]);
+                    } else if (usuarios[posicao]->get_premium()){
+                        comptify.comptify((Usuario_Premium*) usuarios[posicao]);
+                    } else {
+                        comptify.comptify(usuarios[posicao]);
+                    }
+                    controle = false;
                 }
                 else {
                     std::cerr << "Não ha usuarios cadastrados :(" << std::endl;
                     std::cerr << "Cadastre-se para utilizar o Computify! :D" << std::endl;
                     std::cout << std::endl;
-                    controller = false;
+                    controle = false;
                 }
             }
         }
 
-        else if (option == 'x' || option == 'X') {
+        else if (opcao == 'x' || opcao == 'X') {
             break;
         }
 
