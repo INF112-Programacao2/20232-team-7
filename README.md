@@ -12,6 +12,10 @@
 <h2>O Futuro da Música Está nas Suas Mãos:</h2>
 <p>O Computify não é apenas um aplicativo de reprodução de som, é uma plataforma que valoriza a descoberta musical, a conexão entre os amantes da música e o apoio aos artistas emergentes. Descubra novas músicas, conecte-se com artistas e mergulhe em uma comunidade musical inovadora com o Computify, onde a paixão pela música encontra a inovação tecnológica. Sintonize-se para uma experiência musical como nenhuma outra!</p>
 
+<h2>Como instalar o SFML e utilizar a plataforma?</h2>
+<p><b>Baixe o SFML:</b> Linux: <a href="https://www.sfml-dev.org/tutorials/2.6/">Tutorial aqui!</a>        Windows: <a href="https://www.youtube.com/watch?v=4fcTqmT0Hhg&t=234s&ab_channel=Tuffle">Tutorial aqui!</a></p>
+<p>Para utilizar a plataforma basta navegar pelas opções através de um menu iterativo.</p>
+
 <h2>Integrantes do grupo:</h2>
 <p><b>Wenderson Rodrigues Lopes - 112707</b></p>
 <p><b>Laís Reis de Sales - 96862</b></p>
