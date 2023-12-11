@@ -23,8 +23,8 @@ class Artista : public Usuario_Premium {
         int get_quant_albuns_publicados();
         Album* get_album_publicado(int posicao);
 
-        void publicar_musica(Artista* artista);
-        void publicar_album(Artista* artista);
+        void publicar_musica(std::string titulo, int duracao_segundos, bool explicito, std::string genero, Artista* artista, std::string caminho);
+        void publicar_album(std::string titulo, std::string genero);
         void adicionar_musica_album();
         static Artista* encontrar_artista(std::string nome);
 };

@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class Artista;
 
@@ -14,24 +16,25 @@ class Musica{
         int _segundos;
         bool _explicito;
         std::string _generos;
+        std::string _caminho;
     public:
-        Musica(std::string titulo, int segundos, bool explicito, std::string generos, Artista* artista);
+        Musica(std::string titulo, int segundos, bool explicito, std::string generos, Artista* artista, std::string caminho);
 
         void set_titulo(std::string titulo);
 
+        //GETTERS
         std::string get_titulo();
-
         int get_segundos();
-
-        Artista* get_artista();
-
+        std::string get_artista();
         bool get_explicito();
+        static void get_musicas_cadastradas();
+        static Musica* get_musica_cadastrada(int indice);
 
         static Musica* encontrar_musica(std::string nome);
 
-        static void get_musicas_cadastradas();
+        sf::Sound tocar_musica();
 
-        static Musica* get_musica_cadastrada(int indice);
+
 };
 
 #endif

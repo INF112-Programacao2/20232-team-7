@@ -1,17 +1,20 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "musica.hpp"
 #include "artista.hpp"
 
 std::vector<Musica*> Musica::musicas_cadastradas;
 
-Musica::Musica(std::string titulo, int segundos, bool explicito, std::string generos, Artista* artista){
+Musica::Musica(std::string titulo, int segundos, bool explicito, std::string generos, Artista* artista, std::string caminho){
     _titulo = titulo;
     _segundos = segundos;
     _explicito = explicito;
     _generos = generos;
     _artista = artista;
+    _caminho = caminho;
     musicas_cadastradas.push_back(this);
 }
 
@@ -23,8 +26,8 @@ std::string Musica::get_titulo(){
     return _titulo;
 }
 
-Artista* Musica::get_artista() {
-    return _artista;
+std::string Musica::get_artista() {
+    return _artista->get_nome();
 }
 
 int Musica::get_segundos(){
@@ -53,4 +56,20 @@ void Musica::get_musicas_cadastradas(){
 
 Musica* Musica::get_musica_cadastrada(int indice) {
     return musicas_cadastradas[indice - 1];
+}
+
+sf::Sound Musica::tocar_musica(){
+    sf::SoundBuffer musica;
+
+        // Tente carregar o arquivo de áudio (substitua "caminho/do/arquivo.mp3" pelo caminho real do seu arquivo)
+    if (!musica.loadFromFile(_caminho)) {
+        throw std::runtime_error("Não foi possível carregar o arquivo de áudio");
+    }
+    sf::Sound som(musica);
+
+    std::cout << "Tocando agora\n";
+    std::cout << this->get_titulo() << std::endl;
+    std::cout << this->get_artista() << std::endl;
+    std::cout << std::endl;
+    return som;
 }

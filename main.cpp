@@ -2,6 +2,8 @@
 #include <stdexcept>
 #include <vector>
 #include <string>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "usuario.hpp"
 #include "usuario_premium.hpp"

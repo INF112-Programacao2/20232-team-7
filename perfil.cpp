@@ -121,92 +121,99 @@ void Perfil::exibir_playlists(){
     }
 }
 void Perfil::exibir_usuario(Usuario* usuario_visualizador){
-    while (true) {
-        int opcao;
-        std::cout << "Nome de usuario: " << this-> get_usuario()->get_nome() << std::endl;
-        std::cout << "E-mail: " << this-> get_usuario()->get_email() << std::endl;
-        std::cout << "Seguidores: " << this-> get_quant_seguidores() << std::endl;
-        std::cout << "Seguindo: " << this-> get_quant_seguindo() << std::endl;
-    
-        std::cout << "1 - Ver artistas curtidos" << std::endl;
-        std::cout << "2 - Ver musicas curtidas" << std::endl;
-        std::cout << "3 - Ver playlists curtidas" << std::endl;
-        std::cout << "4 - Ver playlists" << std::endl;
+    sf::Sound som = this->_usuario->get_musica_perfil()->tocar_musica();
+    //toca o arquivo
+    som.play();
 
-        if (this-> _usuario->get_premium()) {
-            std::cout << "5 - Ouvir musica do perfil" << std::endl;
-        }
-        
-        if (this->_usuario->get_nome() != usuario_visualizador->get_nome()) {
-            std::cout << "6 - Seguir usuario" << std::endl;
-            std::cout << "7 - Deixar de seguir" << std::endl;
-        }
-        std::cout << "0 - Voltar " << std::endl;
-
+    //mantém o programa em execução enquanto estiver tocando
+    while (som.getStatus() == sf::Music::Playing) {
         while (true) {
-            try {
-                std::cin >> opcao;
+            int opcao;
+            std::cout << "Nome de usuario: " << this-> get_usuario()->get_nome() << std::endl;
+            std::cout << "E-mail: " << this-> get_usuario()->get_email() << std::endl;
+            std::cout << "Seguidores: " << this-> get_quant_seguidores() << std::endl;
+            std::cout << "Seguindo: " << this-> get_quant_seguindo() << std::endl;
+        
+            std::cout << "1 - Ver artistas curtidos" << std::endl;
+            std::cout << "2 - Ver musicas curtidas" << std::endl;
+            std::cout << "3 - Ver playlists curtidas" << std::endl;
+            std::cout << "4 - Ver playlists" << std::endl;
 
-                if (opcao == 0) {
+            if (this-> _usuario->get_premium()) {
+                std::cout << "5 - Ouvir musica do perfil" << std::endl;
+            }
+            
+            if (this->_usuario->get_nome() != usuario_visualizador->get_nome()) {
+                std::cout << "6 - Seguir usuario" << std::endl;
+                std::cout << "7 - Deixar de seguir" << std::endl;
+            }
+            std::cout << "0 - Voltar " << std::endl;
+
+            while (true) {
+                try {
+                    std::cin >> opcao;
+
+                    if (opcao == 0) {
+                        break;
+                    }
+
+                    if (opcao < 0 || opcao > 7) {
+                        throw std::invalid_argument("Opcao invalida. Digite novamente!");
+                    }
                     break;
                 }
-
-                if (opcao < 0 || opcao > 7) {
-                    throw std::invalid_argument("Opcao invalida. Digite novamente!");
+                catch (std::invalid_argument &e) {
+                    std::cerr << e.what() << std::endl;
                 }
-                break;
             }
-            catch (std::invalid_argument &e) {
-                std::cerr << e.what() << std::endl;
-            }
-        }
 
-        switch (opcao) {
-            case 0: 
-                break;
-            case 1: 
-                this-> exibir_artistas_curtidos();
-                break;
-            case 2: 
-                this-> exibir_musicas_curtidas();
-                break;
-            case 3:
-                this-> exibir_playlist_curtidas();
-                break;
-            case 4:
-                this-> exibir_playlists();
-                break;
-            case 5:
-                if(_usuario->get_premium()) {
-                    //Implementar musica perfil.
-                }
-                else {
-                    std::cout << "O usuario nao possui o pacote premium para obter musica personalizada no perfil!" << std::endl;
-                }
-                break;
-            case 6:
-                if (this->_usuario->get_nome() != usuario_visualizador->get_nome()) {
-                    this->seguir(usuario_visualizador);
-                }
-                else {
-                    std::cout << "Voce não pode se seguir!" << std::endl;
-                }
-                break;
-            case 7: 
-                if (this->_usuario->get_nome() != usuario_visualizador->get_nome()) {
-                        usuario_visualizador->get_perfil()->parar_seguir(this-> _usuario);
-                        this-> parar_seguir(usuario_visualizador);
-
+            switch (opcao) {
+                case 0: 
+                    break;
+                case 1: 
+                    this-> exibir_artistas_curtidos();
+                    break;
+                case 2: 
+                    this-> exibir_musicas_curtidas();
+                    break;
+                case 3:
+                    this-> exibir_playlist_curtidas();
+                    break;
+                case 4:
+                    this-> exibir_playlists();
+                    break;
+                case 5:
+                    if(_usuario->get_premium()) {
+                        //Implementar musica perfil.
                     }
                     else {
-                        std::cout << "Voce não pode deixar de se seguir!" << std::endl;
+                        std::cout << "O usuario nao possui o pacote premium para obter musica personalizada no perfil!" << std::endl;
                     }
                     break;
-        }
+                case 6:
+                    if (this->_usuario->get_nome() != usuario_visualizador->get_nome()) {
+                        this->seguir(usuario_visualizador);
+                    }
+                    else {
+                        std::cout << "Voce não pode se seguir!" << std::endl;
+                    }
+                    break;
+                case 7: 
+                    if (this->_usuario->get_nome() != usuario_visualizador->get_nome()) {
+                            usuario_visualizador->get_perfil()->parar_seguir(this-> _usuario);
+                            this-> parar_seguir(usuario_visualizador);
 
-        if (opcao == 0) {
-            return;
+                        }
+                        else {
+                            std::cout << "Voce não pode deixar de se seguir!" << std::endl;
+                        }
+                        break;
+            }
+
+            if (opcao == 0) {
+                return;
+            }
+            
         }
-        
     }
 }
