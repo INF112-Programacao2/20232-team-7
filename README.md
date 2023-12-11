@@ -1,4 +1,3 @@
-# 20232-team-7
 ![Header](https://github.com/INF112-Programacao2/20232-team-7/assets/132304981/c5ad9163-ff68-4cc0-b3a8-aa5c81428924)
 <h1>Computify: Sintonizando o Futuro da Música!</h1>
 <p>Bem-vindo ao Computify, o aplicativo de streaming de som desenvolvido por alunos da Universidade Federal de Viçosa - UFV - como parte do trabalho de conclusão da disciplina INF 112. Esta plataforma é mais do que apenas uma ferramenta para ouvir música, é uma experiência interativa que une Artistas e amantes da música em uma comunidade vibrante.</p>
