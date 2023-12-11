@@ -4,7 +4,7 @@
 
 #include "usuario_premium.hpp"
 
-std::vector<Usuario_Premium*> premium_cadastrados;
+std::vector<Usuario_Premium*> Usuario_Premium::premium_cadastrados;
 
 Usuario_Premium::Usuario_Premium(std::string email, std::string nome) : Usuario(email, nome) {
     this->_premium = true;
@@ -27,14 +27,11 @@ void Usuario_Premium::definir_musica_perfil(Musica *musica) {
 }
 
 Usuario_Premium* Usuario_Premium::encontrar_usuario(std::string nome){
-    bool encontrou = false;
     for (int i = 0; i < premium_cadastrados.size(); i++){
         if(nome == premium_cadastrados[i]->get_nome()){
-            encontrou = true;
             return premium_cadastrados[i];
         }
     }
-    if (!encontrou){
-        throw std::invalid_argument("Este usuário não está cadastrado");
-    }
+    
+    throw std::invalid_argument("Este usuário não está cadastrado");
 }

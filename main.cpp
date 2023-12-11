@@ -69,19 +69,26 @@ int main() {
                     std::cout << std::endl;
                 }
 
-                std::cout << "Digite seu nome de usuario: " << std::endl;
-                std::cin >> nome_usuario;
-                std::cout << "Digite seu e-mail: " << std::endl;
-                std::cin >> email;
-
                 if (opcao == '1') {
+                    std::cout << "Digite seu nome de usuario: " << std::endl;
+                    std::cin >> nome_usuario;
+                    std::cout << "Digite seu e-mail: " << std::endl;
+                    std::cin >> email;
                     usuarios.push_back(new Usuario(email, nome_usuario));
                 }
                 else if (opcao == '2') {
+                    std::cout << "Digite seu nome de usuario: " << std::endl;
+                    std::cin >> nome_usuario;
+                    std::cout << "Digite seu e-mail: " << std::endl;
+                    std::cin >> email;
                     usuarios_premium.push_back(new Usuario_Premium(email, nome_usuario));
                     usuarios.push_back(usuarios_premium[usuarios_premium.size() - 1]);
                 }
                 else if (opcao == '3') {
+                    std::cout << "Digite seu nome de usuario: " << std::endl;
+                    std::cin >> nome_usuario;
+                    std::cout << "Digite seu e-mail: " << std::endl;
+                    std::cin >> email;
                     artistas.push_back(new Artista(email, nome_usuario));
                     usuarios_premium.push_back(artistas[artistas.size()]);
                     usuarios.push_back(artistas[artistas.size() - 1]);

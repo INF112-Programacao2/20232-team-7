@@ -3,6 +3,8 @@
 #include <vector>
 #include "usuario.hpp"
 
+class Usuario;
+
 class Perfil {
     private:
         Usuario* _usuario;
@@ -20,13 +22,14 @@ class Perfil {
         void exibir_seguindo();
         void seguir(Usuario* usuario);
         void parar_seguir(Usuario* usuario);
+        void parar_seguindo(Usuario* usuario);
 
         void tocar_musica_perfil();
         void exibir_musicas_curtidas();
         void exibir_artistas_curtidos();
         void exibir_playlist_curtidas();
         void exibir_playlists();
-        void exibir_usuario();
+        void exibir_usuario(Usuario* usuario);
 };
 
 #endif

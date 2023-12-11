@@ -4,16 +4,19 @@
 #include <string>
 #include <vector>
 
+#include "perfil.hpp"
 #include "musica.hpp"
 #include "playlist.hpp"
 
 class Artista;
 class Usuario_Premium;
+class Perfil;
 
 class Usuario {
     protected:
         static std::vector<Usuario*> usuarios_cadastrados;
         std::string _nome_usuario;
+        Perfil* _perfil;
         std::string _email;
         bool _premium;
         bool _artista;
@@ -43,9 +46,19 @@ class Usuario {
         void set_nome(std::string nome);  //
         void set_email(std::string email);  //
 
+        Perfil* get_perfil();
+
         void curtir_musica(Musica *musica); //
+        void descurtir_musica(Musica *musica);
+
         void curtir_playlist(Playlist *playlist); //
+        void descurtir_playlist(Playlist *playlist);
+
         void curtir_artista(Artista *artista); //
+        void descurtir_artista(Artista *artista);
+
+        void criar_playlist();
+
         virtual void tocar_playlist(Playlist *playlist);       // Verificar se realmente será void.
         virtual void definir_musica_perfil(Musica *musica);
 

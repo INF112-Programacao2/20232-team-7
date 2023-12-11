@@ -5,7 +5,7 @@
 
 #include "artista.hpp"
 
-std::vector<Artista*> artistas_cadastrados;
+std::vector<Artista*> Artista::artistas_cadastrados;
 
 Artista::Artista(std::string email, std::string nome) : Usuario_Premium(email, nome) {
     this->_artista = true;
@@ -39,7 +39,7 @@ Album* Artista::get_album_publicado(int posicao){
     return _albuns_publicados[posicao];
 }
 
-void Artista::publicar_musica() {
+void Artista::publicar_musica(Artista* artista) {
     std::string titulo_musica;
     int duracao_segundos;
     char s_n;
@@ -74,13 +74,14 @@ void Artista::publicar_musica() {
     std::cout << "Digite o genero da musica: " << std::endl;
     std::cin >> genero;
 
-    _musicas_publicadas.push_back(new Musica(titulo_musica, duracao_segundos, explicito, genero));
+    _musicas_publicadas.push_back(new Musica(titulo_musica, duracao_segundos, explicito, genero, artista));
     std::cout << "Musica publicada com sucesso!! " << std::endl;
 }
 
-void Artista::publicar_album() {
+void Artista::publicar_album(Artista* artista) {
     std::string titulo_album;
     std::string genero;
+    int cont;
 
     std::cout << "Digite o titulo do album: " << std::endl;
     std::cin >> titulo_album;
@@ -88,38 +89,25 @@ void Artista::publicar_album() {
     std::cout << "Digite o genero do album: " << std::endl;
     std::cin >> genero;
 
-    _albuns_publicados.push_back(new Album(titulo_album, genero));
+    _albuns_publicados.push_back(new Album(titulo_album, artista, genero));
+
+    std::cout << "Quantas musicas terao nesse album?" << std::endl;
+    std::cin >> cont;
+
+    for (int i = 0; i < cont; i++) {
+        publicar_musica(artista);
+        _albuns_publicados[_albuns_publicados.size() - 1]->set_musica(_musicas_publicadas[_musicas_publicadas.size() - 1]);
+    }
+
     std::cout << "Album publicado com sucesso!! " << std::endl;
 }
 
-void Artista::adicionar_musica_album() {
-    int pos_album = 0;
-    int pos_musica = 0;
-    std::cout << "Qual album deseja adicionar as musicas?" << std::endl;
-    for (int i = 0; i < _albuns_publicados.size(); i++) {
-        std::cout << (i + 1) << " - " << _albuns_publicados[i]->get_titulo() << std::endl;
-    }
-    std::cin >> pos_album;
-
-    std::cout << "Qual musica deseja adicionar ao album " << _albuns_publicados[pos_album]->get_titulo() << "? " << std::endl;
-    for (int i = 0; i < _musicas_publicadas.size(); i++) {
-        std::cout << (i + 1) << " - " << _musicas_publicadas[i]->get_titulo() << std::endl;
-    }
-    std::cin >> pos_musica;
-
-    _albuns_publicados[pos_album]->set_musica(_musicas_publicadas[pos_musica]);
-    std::cout << "Musica adicionada ao album com sucesso!!" << std::endl;
-}
-
 Artista* Artista::encontrar_artista(std::string nome){
-    bool encontrou = false;
     for (int i = 0; i < artistas_cadastrados.size(); i++){
         if(nome == artistas_cadastrados[i]->get_nome()){
-            encontrou = true;
             return artistas_cadastrados[i];
         }
     }
-    if (!encontrou){
-        throw std::invalid_argument("Este artista não está cadastrado");
-    }
+
+    throw std::invalid_argument("Este artista não está cadastrado");
 }

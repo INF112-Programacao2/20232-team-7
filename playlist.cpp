@@ -3,7 +3,7 @@
 #include <vector>
 #include "playlist.hpp"
 
-std::vector<Playlist*> playlists_cadastradas;
+std::vector<Playlist*> Playlist::playlists_cadastradas;
 
 Playlist::Playlist(std::string nome){
     this->_nome = nome;
@@ -37,7 +37,7 @@ void Playlist::adicionar_musica(Musica* musica){
 
 void Playlist::apagar_musica(int posicao){
     if (posicao >= 0 && posicao < _musicas.size()) {
-        delete _musicas[posicao];  // Libera a memória alocada dinamicamente
+        _musicas[posicao] = nullptr;  // Remove o ponteiro para a musica da playlist.
         for (int i = posicao; i < _musicas.size(); i++) {
             _musicas[i] = _musicas[i + 1];             // Organiza as musicas na playlist.
         }  
@@ -48,14 +48,11 @@ void Playlist::apagar_musica(int posicao){
 }
 
 Playlist* Playlist::encontrar_playlist(std::string nome){
-    bool encontrou = false;
     for (int i = 0; i < playlists_cadastradas.size(); i++){
         if(nome == playlists_cadastradas[i]->get_nome()){
-            encontrou = true;
             return playlists_cadastradas[i];
         }
     }
-    if (!encontrou){
-        throw std::invalid_argument("Esta playlist não está cadastrada");
-    }
+
+    throw std::invalid_argument("Esta playlist não está cadastrada");
 }

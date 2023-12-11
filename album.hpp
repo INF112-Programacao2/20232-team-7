@@ -5,18 +5,23 @@
 #include <vector>
 #include "musica.hpp"
 
+class Artista;
+
 class Album{
     private:
         std::string _titulo;
+        Artista* _artista;
         std::vector<Musica*>_musicas;
         int _duracao;
         std::string _generos;
     public:
-        Album(std::string titulo, std::string _generos);
+        Album(std::string titulo, Artista* artista, std::string generos);
 
         void set_musica(Musica* musica);
 
         Musica* get_musica(int posicao);
+
+        Artista* get_artista();
 
         std::string get_titulo();
 

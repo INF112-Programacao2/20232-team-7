@@ -3,8 +3,9 @@
 #include <vector>
 #include "album.hpp"
 
-Album::Album(std::string titulo, std::string generos){
+Album::Album(std::string titulo, Artista* artista, std::string generos){
     _titulo = titulo;
+    _artista = artista;
     _generos = generos;
     _duracao = 0;
     std::vector<Musica*> _musicas;
@@ -17,6 +18,10 @@ void Album::set_musica(Musica* musica){
 
 Musica* Album::get_musica(int posicao){
     return _musicas[posicao];
+}
+
+Artista* Album::get_artista() {
+    return _artista;
 }
 
 std::string Album::get_titulo(){
