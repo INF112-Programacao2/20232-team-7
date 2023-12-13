@@ -88,8 +88,13 @@ Playlist* Usuario::get_playlist(int posicao) {
     return _playlists[posicao];
 }
 
-Musica* Usuario::get_musica_perfil() {
-    return _musica_perfil; ///////// MODIFICAR
+Usuario_Premium* Usuario::retorna_premium() {
+    if (get_premium()) {
+        return static_cast<Usuario_Premium*>(this);
+    }
+    else {
+        return nullptr;
+    }
 }
 
 void Usuario::curtir_musica(Musica *musica) {
@@ -108,15 +113,17 @@ void Usuario::curtir_musica(Musica *musica) {
     }
 }
 
-void Usuario::criar_playlist() {
+void Usuario::criar_playlist(Usuario* usuario) {
     std::string nome;
+    char nome_in[100];
     int quant = 0;
     int indice = 0;
 
     std::cout << "Digite o nome da sua playlist: " << std::endl;
-    std::cin >> nome;
-
-    _playlists.push_back(new Playlist(nome));
+    std::cin.ignore();
+    std::cin.getline(nome_in, 100);
+    nome = nome_in;
+    _playlists.push_back(new Playlist(nome, usuario));
 
     std::cout << "Quantas musicas terao a sua playlist?" << std::endl;
     std::cin >> quant;
@@ -252,16 +259,9 @@ void Usuario::descurtir_artista(Artista *artista) {
     }
 }
 
-void Usuario::tocar_playlist(Playlist *playlist){       
-// Verificar se realmente será void.
-}
-
-void Usuario::definir_musica_perfil(Musica *musica) {
-
-}
-
 Usuario* Usuario::encontrar_usuario(std::string nome){
-    for (int i = 0; i < usuarios_cadastrados.size(); i++){
+    int tamanho = usuarios_cadastrados.size();
+    for (int i = 0; i < tamanho; i++){
         if(nome == usuarios_cadastrados[i]->get_nome()){
             return usuarios_cadastrados[i];
         }

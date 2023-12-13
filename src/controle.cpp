@@ -14,9 +14,9 @@ Controle::Controle(){}
 
 void Controle::comptify(Artista *artista){
     //variáveis de controle
+    Playlist* playlist = nullptr;
     int opcao;
     int quantidade;
-    bool achei;
     while(true){ //menu 
         std::cout << "0 - Sair" << std::endl;
         std::cout << "1 - Exibir perfil" << std::endl;
@@ -42,13 +42,14 @@ void Controle::comptify(Artista *artista){
         std::cout << std::endl;
 
         //variáveis que podem ser digitadas em entradas do usuário
-        std::string titulo_album;
         std::string genero;
-        std::string titulo_musica;
+        char titulo_[100];
+        std::string titulo;
         int duracao_segundos;
         char s_n;
         bool explicito;
         std::string caminho;
+        char entrada_in[100];
         std::string entrada;
         int indice;
 
@@ -73,7 +74,7 @@ void Controle::comptify(Artista *artista){
                     std::cout << "Suas músicas curtidas: " << std::endl;
                     quantidade = artista->get_quant_musicas_curtidas();
                     for(int i=0; i<quantidade; i++){
-                        std::cout << artista->get_musica_curtida(i)->get_titulo() << " - by " << artista->get_musica_curtida(i)->get_artista() << std::endl;
+                        std::cout << (i + 1) << "- " << artista->get_musica_curtida(i)->get_titulo() << " - by " << artista->get_musica_curtida(i)->get_artista()->get_nome() << std::endl;
                     }
                 }
                 else {
@@ -86,7 +87,7 @@ void Controle::comptify(Artista *artista){
                     std::cout << "Seus artistas curtidos: " << std::endl;
                     quantidade = artista->get_quant_artistas_curtidos();
                     for(int i=0; i<quantidade; i++){
-                        std::cout << artista->get_artista_curtido(i)->get_nome() << std::endl;
+                        std::cout << (i + 1) << "- " << artista->get_artista_curtido(i)->get_nome() << std::endl;
                     }
                 }
                 else {
@@ -124,61 +125,16 @@ void Controle::comptify(Artista *artista){
                         }
 
                         switch(opcoes) {
-                            int opcoes2;
                             case 0:
                                 break;
                             case 1: 
                                 std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
                                 std::cin >> opcoes;
                                 opcoes--;
+                                Playlist* playlist = Playlist::encontrar_playlist(artista->get_playlist(opcoes)->get_nome());
 
-                                for (int i = 0; i < artista->get_playlist(opcoes)->get_quant_musicas();) {
-                                    //Tocar musica enquanto
-                                    std::cout << "Voce esta ouvindo: " << artista->get_playlist(opcoes)->get_musica(i)->get_titulo() << " - by " << artista->get_playlist(opcoes)->get_musica(i)->get_artista() << std::endl;
-                                    std::cout << std::endl;
-
-                                    std::cout << "1 - Curtir música" << std::endl;
-                                    std::cout << "2 - Descurtir música" << std::endl;
-                                    std::cout << "3 - Proxima musica" << std::endl;
-                                    std::cout << "4 - Musica anterior" << std::endl;
-                                    std::cout << "0 - Voltar ao menu inicial" << std::endl;
-                                    std::cin >> opcoes2;
-
-                                    switch(opcoes2) {
-                                        case 0:
-                                            break;
-                                        case 1: 
-                                            artista->curtir_musica(artista->get_playlist(opcoes)->get_musica(i));
-                                            break;
-                                        case 2:
-                                            artista->descurtir_musica(artista->get_playlist(opcoes)->get_musica(i));
-                                            break;
-                                        case 3:
-                                            if (i + 1 < artista->get_playlist(opcoes)->get_quant_musicas()) {
-                                                i = i + 1;
-                                                artista->get_playlist(opcoes)->get_musica(i)->tocar_musica();
-                                            } 
-                                            else {
-                                                std::cout << "Você já está na última música da playlist." << std::endl;
-                                            }
-                                            break;
-                                        case 4:
-                                            if (i - 1 >= 0) {
-                                                i = i - 1;
-                                                artista->get_playlist(opcoes)->get_musica(i)->tocar_musica();
-                                            } 
-                                            else {
-                                                std::cout << "Você já está na primeira música da playlist." << std::endl;
-                                            }
-                                            break;
-                                        
-                                    }
-
-                                    if (opcoes2 == 0) {
-                                        break;
-                                    }
-                                
-                                }  
+                                playlist->tocar_playlist(artista);
+                                break;
                         }
                     }
                 }
@@ -194,6 +150,39 @@ void Controle::comptify(Artista *artista){
                     for(int i=0; i<quantidade; i++){
                         std::cout << artista->get_playlist_curtida(i)->get_nome() << std::endl;
                     }
+
+                    while (true) {
+                        int opcoes;
+                        try {
+                            std::cout << "Deseja acessar alguma playlist?" << std::endl;
+                            std::cout << "1 - SIM " << std::endl;
+                            std::cout << "0 - NAO " << std::endl;
+                            std::cin >> opcoes;
+
+                            if (opcoes == 0) {
+                                break;
+                            }
+
+                            if (opcoes != 1) {
+                                throw std::invalid_argument("Opcao invalida. Digite novamente!");
+                            }
+                            
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << e.what() << std::endl;
+                        }
+
+                        switch(opcoes) {
+                            case 0:
+                                break;
+                            case 1: 
+                                std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
+                                std::cin >> opcoes;
+                                opcoes--;
+                                Playlist* playlist = Playlist::encontrar_playlist(artista->get_playlist_curtida(opcoes)->get_nome());
+                                playlist->tocar_playlist(artista);
+                        }
+                    }
                 }
                 else {
                     std::cout << "Voce ainda nao tem nenhuma playlist curtida! :(" << std::endl;
@@ -202,9 +191,9 @@ void Controle::comptify(Artista *artista){
                 break;
             case 8:
                 std::cout << "Digite o nome da música: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
                 try {
                     Musica* musica_procurada = Musica::encontrar_musica(entrada);
                     int escolher;
@@ -241,9 +230,9 @@ void Controle::comptify(Artista *artista){
                 break;
             case 9:
                 std::cout << "Digite o nome do artista: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
                 try {
                     Artista* artista_procurado = Artista::encontrar_artista(entrada);
                     int escolher;
@@ -282,56 +271,50 @@ void Controle::comptify(Artista *artista){
                 break;
             case 10:
                 std::cout << "Digite o nome da playlist: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                try {
-                    Playlist* playlist = Playlist::encontrar_playlist(entrada);
-                    int escolher;
-                    while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir playlist" << std::endl;
-                        std::cout << "2 - Escutar playlist" << std::endl;
-                        std::cout << "3 - Descurtir playlist" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
 
-                        switch (escolher){
-                            case 1:
-                                artista->curtir_playlist(playlist);
-                                break;
-                            case 2:
-                                artista->tocar_playlist(playlist);
-                                break;
-                            case 3:
-                                artista->descurtir_playlist(playlist);
-                                break;
-                            case 4:
-                                break;
-                            default:
-                                std::cout << "Digite uma das opções listadas." << std::endl;
-                        }
+                playlist = Playlist::encontrar_playlist(entrada);
+                std::cout << playlist->get_nome() << " - by " << playlist->get_usuario()->get_nome() << std::endl;
+                playlist->tocar_playlist(artista);
 
-                        if (escolher == 4) {
-                            break;
-                        }
+                while (true) {
+                    int opcoes;
+
+                    std::cout << "O que deseja?" << std::endl;
+                    std::cout << "1 - Curtir playlist " << std::endl;
+                    std::cout << "2 - Descurtir playlist " << std::endl;
+                    std::cout << "0 - voltar " << std::endl;
+                    std::cin >> opcoes;
+
+                    if (opcoes == 0) {
+                        break;
                     }
-                } catch (std::invalid_argument &e){
-                    std::cout << e.what() << std::endl;
+
+                    switch(opcoes) {
+                        case 1:
+                            artista->curtir_playlist(playlist);
+                            break;
+                        case 2: 
+                            artista->descurtir_playlist(playlist);
+                            break;
+                    }
                 }
+
                 break;
             case 11:
                 std::cout << "Digite o nome do usuário: " << std::endl;
                 std::cin >> entrada;
                 try {
                     Usuario* usuario_procurado = Usuario::encontrar_usuario(entrada);
-                    //usuario_procurado->exibir_perfil();
+                    usuario_procurado->get_perfil()->exibir_usuario(artista);
                 } catch (std::invalid_argument &e){
                     std::cout << e.what() << std::endl;
                 }
                 break;
             case 12:
-                artista->criar_playlist();
+                artista->criar_playlist(artista);
                 break;
             case 13:
                 std::cout << "Essas são todas as músicas presentes no acervo do Comptify" << std::endl;
@@ -343,8 +326,44 @@ void Controle::comptify(Artista *artista){
                     std::cin >> indice;
                     Musica::get_musica_cadastrada(indice)->tocar_musica();
 
-                    std::cout << "Quer ouvir outra música? (s/n)" << std::endl;
-                    std::cin >> entrada;
+                    while(true) {
+                        try {
+                            std::cout << "Deseja curtir essa musica? (s/n)" << std::endl;
+                            std::cin >> entrada;
+
+                            if (entrada == "s" || entrada == "S") {
+                                artista->curtir_musica(Musica::get_musica_cadastrada(indice));
+                            }
+                            else if (entrada != "n" || entrada != "N" || entrada != "s" || entrada != "S") {
+                                throw std::invalid_argument("Entrada invalida. Digite Novamente!");
+                            }
+
+                            break;
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << "Erro: " << e.what() << std::endl;
+                        }
+                    }
+
+                    while(true) {
+                        try {
+                            std::cout << "Quer ouvir outra música? (s/n)" << std::endl;
+                            std::cin >> entrada;
+
+                            if(entrada == "n" || entrada == "N"){
+                                break;
+                            }
+                            else if(entrada == "s" || entrada == "S"){
+                                break;
+                            }
+                            else {
+                                throw std::invalid_argument("Entrada invalida. Digite Novamente");
+                            }
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << "Erro: " << e.what() << std::endl;
+                        }
+                    }
 
                     if(entrada == "n" || entrada == "N"){
                         break;
@@ -364,11 +383,12 @@ void Controle::comptify(Artista *artista){
                 }
                 break;
             case 15:
-
                 std::cout << "Digite o titulo da musica: " << std::endl;
-                std::getline(std::cin, titulo_musica);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
+                std::cin.getline(titulo_, 100);
+                
+                titulo = titulo_;
+
                 std::cout << "Digite a duracao em segundos da musica: " << std::endl;
                 std::cin >> duracao_segundos;
                 std::cout << "A musica contem conteudo explicito? Digite s/n!: " << std::endl;
@@ -393,30 +413,24 @@ void Controle::comptify(Artista *artista){
                 }
 
                 std::cout << "Digite o genero da musica: " << std::endl;
-                std::getline(std::cin, genero);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin >> genero;
 
                 std::cout << "Digite o caminho da musica: " << std::endl;
                 std::cin >> caminho;
 
-                artista->publicar_musica(titulo_musica, duracao_segundos, explicito, genero, artista, caminho);
+                artista->publicar_musica(titulo, duracao_segundos, explicito, genero, artista, caminho);
                 std::cout << "Musica publicada com sucesso!! " << std::endl;
                 break;
             case 16:
-                int cont;
-
                 std::cout << "Digite o titulo do album: " << std::endl;
-                std::getline(std::cin, titulo_album);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                std::cin.getline(titulo_, 100);
+                titulo = titulo_;
 
                 std::cout << "Digite o genero do album: " << std::endl;
-                std::getline(std::cin, genero);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin >> genero;
 
-                artista->publicar_album(titulo_album, genero);
+                artista->publicar_album(titulo, genero);
 
                 std::cout << "Album publicado com sucesso!! " << std::endl;
                 break;
@@ -441,9 +455,9 @@ void Controle::comptify(Artista *artista){
 }
 
 void Controle::comptify(Usuario_Premium *premium){
+    Playlist* playlist = nullptr;
     int opcao;
     int quantidade;
-    bool achei;
     while(true){
         std::cout << "0 - Sair" << std::endl;
         std::cout << "1 - Exibir perfil" << std::endl;
@@ -465,6 +479,7 @@ void Controle::comptify(Usuario_Premium *premium){
         std::cout << std::endl;
 
         std::string entrada;
+        char entrada_in[100];
         int indice;
         switch (opcao){
             case 0:
@@ -487,7 +502,7 @@ void Controle::comptify(Usuario_Premium *premium){
                     std::cout << "Suas músicas curtidas: " << std::endl;
                     quantidade = premium->get_quant_musicas_curtidas();
                     for(int i=0; i<quantidade; i++){
-                        std::cout << premium->get_musica_curtida(i)->get_titulo() << " - by " << premium->get_musica_curtida(i)->get_artista() << std::endl;
+                        std::cout << (i + 1) << "- " << premium->get_musica_curtida(i)->get_titulo() << " - by " << premium->get_musica_curtida(i)->get_artista()->get_nome() << std::endl;
                     }
                 }
                 else {
@@ -500,7 +515,7 @@ void Controle::comptify(Usuario_Premium *premium){
                     std::cout << "Seus artistas curtidos: " << std::endl;
                     quantidade = premium->get_quant_artistas_curtidos();
                     for(int i=0; i<quantidade; i++){
-                        std::cout << premium->get_artista_curtido(i)->get_nome() << std::endl;
+                        std::cout << (i + 1) << "- " << premium->get_artista_curtido(i)->get_nome() << std::endl;
                     }
                 }
                 else {
@@ -538,61 +553,14 @@ void Controle::comptify(Usuario_Premium *premium){
                         }
 
                         switch(opcoes) {
-                            int opcoes2;
                             case 0:
                                 break;
                             case 1: 
                                 std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
                                 std::cin >> opcoes;
                                 opcoes--;
-
-                                for (int i = 0; i < premium->get_playlist(opcoes)->get_quant_musicas();) {
-                                    //Tocar musica enquanto
-                                    std::cout << "Voce esta ouvindo: " << premium->get_playlist(opcoes)->get_musica(i)->get_titulo() << " - by " << premium->get_playlist(opcoes)->get_musica(i)->get_artista() << std::endl;
-                                    std::cout << std::endl;
-
-                                    std::cout << "1 - Curtir música" << std::endl;
-                                    std::cout << "2 - Descurtir música" << std::endl;
-                                    std::cout << "3 - Proxima musica" << std::endl;
-                                    std::cout << "4 - Musica anterior" << std::endl;
-                                    std::cout << "0 - Voltar ao menu inicial" << std::endl;
-                                    std::cin >> opcoes2;
-
-                                    switch(opcoes2) {
-                                        case 0:
-                                            break;
-                                        case 1: 
-                                            premium->curtir_musica(premium->get_playlist(opcoes)->get_musica(i));
-                                            break;
-                                        case 2:
-                                            premium->descurtir_musica(premium->get_playlist(opcoes)->get_musica(i));
-                                            break;
-                                        case 3:
-                                            if (i + 1 < premium->get_playlist(opcoes)->get_quant_musicas()) {
-                                                i = i + 1;
-                                                premium->get_playlist(opcoes)->get_musica(i)->tocar_musica();
-                                            } 
-                                            else {
-                                                std::cout << "Você já está na última música da playlist." << std::endl;
-                                            }
-                                            break;
-                                        case 4:
-                                            if (i - 1 >= 0) {
-                                                i = i - 1;
-                                                premium->get_playlist(opcoes)->get_musica(i)->tocar_musica();
-                                            } 
-                                            else {
-                                                std::cout << "Você já está na primeira música da playlist." << std::endl;
-                                            }
-                                            break;
-                                        
-                                    }
-
-                                    if (opcoes2 == 0) {
-                                        break;
-                                    }
-                                
-                                }  
+                                Playlist* playlist = Playlist::encontrar_playlist(premium->get_playlist(opcoes)->get_nome());
+                                playlist->tocar_playlist(premium);
                         }
                     }
                 }
@@ -608,6 +576,39 @@ void Controle::comptify(Usuario_Premium *premium){
                     for(int i=0; i<quantidade; i++){
                         std::cout << premium->get_playlist_curtida(i)->get_nome() << std::endl;
                     }
+
+                    while (true) {
+                        int opcoes;
+                        try {
+                            std::cout << "Deseja acessar alguma playlist?" << std::endl;
+                            std::cout << "1 - SIM " << std::endl;
+                            std::cout << "0 - NAO " << std::endl;
+                            std::cin >> opcoes;
+
+                            if (opcoes == 0) {
+                                break;
+                            }
+
+                            if (opcoes != 1) {
+                                throw std::invalid_argument("Opcao invalida. Digite novamente!");
+                            }
+                            
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << e.what() << std::endl;
+                        }
+
+                        switch(opcoes) {
+                            case 0:
+                                break;
+                            case 1: 
+                                std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
+                                std::cin >> opcoes;
+                                opcoes--;
+                                Playlist* playlist = Playlist::encontrar_playlist(premium->get_playlist_curtida(opcoes)->get_nome());
+                                playlist->tocar_playlist(premium);
+                        }
+                    }
                 }
                 else {
                     std::cout << "Voce ainda nao tem nenhuma playlist curtida! :(" << std::endl;
@@ -616,9 +617,10 @@ void Controle::comptify(Usuario_Premium *premium){
                 break;
             case 8:
                 std::cout << "Digite o nome da música: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
+
                 try {
                     Musica* musica_procurada = Musica::encontrar_musica(entrada);
                     int escolher;
@@ -655,9 +657,9 @@ void Controle::comptify(Usuario_Premium *premium){
                 break;
             case 9:
                 std::cout << "Digite o nome do artista: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
                 try {
                     Artista* artista_procurado = Artista::encontrar_artista(entrada);
                     int escolher;
@@ -696,56 +698,50 @@ void Controle::comptify(Usuario_Premium *premium){
                 break;
             case 10:
                 std::cout << "Digite o nome da playlist: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                try {
-                    Playlist* playlist = Playlist::encontrar_playlist(entrada);
-                    int escolher;
-                    while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir playlist" << std::endl;
-                        std::cout << "2 - Escutar playlist" << std::endl;
-                        std::cout << "3 - Descurtir playlist" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
 
-                        switch (escolher){
-                            case 1:
-                                premium->curtir_playlist(playlist);
-                                break;
-                            case 2:
-                                premium->tocar_playlist(playlist);
-                                break;
-                            case 3:
-                                premium->descurtir_playlist(playlist);
-                                break;
-                            case 4:
-                                break;
-                            default:
-                                std::cout << "Digite uma das opções listadas." << std::endl;
-                        }
+                playlist = Playlist::encontrar_playlist(entrada);
+                std::cout << playlist->get_nome() << " - by " << playlist->get_usuario()->get_nome() << std::endl;
+                playlist->tocar_playlist(premium);
 
-                        if (escolher == 4) {
-                            break;
-                        }
+                while (true) {
+                    int opcoes;
+
+                    std::cout << "O que deseja?" << std::endl;
+                    std::cout << "1 - Curtir playlist " << std::endl;
+                    std::cout << "2 - Descurtir playlist " << std::endl;
+                    std::cout << "0 - voltar " << std::endl;
+                    std::cin >> opcoes;
+
+                    if (opcoes == 0) {
+                        break;
                     }
-                } catch (std::invalid_argument &e){
-                    std::cout << e.what() << std::endl;
+
+                    switch(opcoes) {
+                        case 1:
+                            premium->curtir_playlist(playlist);
+                            break;
+                        case 2: 
+                            premium->descurtir_playlist(playlist);
+                            break;
+                    }
                 }
+
                 break;
             case 11:
                 std::cout << "Digite o nome do usuário: " << std::endl;
                 std::cin >> entrada;
                 try {
                     Usuario* usuario_procurado = Usuario::encontrar_usuario(entrada);
-                    //usuario_procurado->exibir_perfil();
+                    usuario_procurado->get_perfil()->exibir_usuario(premium);
                 } catch (std::invalid_argument &e){
                     std::cout << e.what() << std::endl;
                 }
                 break;
             case 12:
-                premium->criar_playlist();
+                premium->criar_playlist(premium);
                 break;
             case 13:
                 std::cout << "Essas são todas as músicas presentes no acervo do Comptify" << std::endl;
@@ -757,8 +753,44 @@ void Controle::comptify(Usuario_Premium *premium){
                     std::cin >> indice;
                     Musica::get_musica_cadastrada(indice)->tocar_musica();
 
-                    std::cout << "Quer ouvir outra música? (s/n)" << std::endl;
-                    std::cin >> entrada;
+                    while(true) {
+                        try {
+                            std::cout << "Deseja curtir essa musica? (s/n)" << std::endl;
+                            std::cin >> entrada;
+
+                            if (entrada == "s" || entrada == "S") {
+                                premium->curtir_musica(Musica::get_musica_cadastrada(indice));
+                            }
+                            else if (entrada != "n" || entrada != "N" || entrada != "s" || entrada != "S") {
+                                throw std::invalid_argument("Entrada invalida. Digite Novamente!");
+                            }
+
+                            break;
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << "Erro: " << e.what() << std::endl;
+                        }
+                    }
+
+                    while(true) {
+                        try {
+                            std::cout << "Quer ouvir outra música? (s/n)" << std::endl;
+                            std::cin >> entrada;
+
+                            if(entrada == "n" || entrada == "N"){
+                                break;
+                            }
+                            else if(entrada == "s" || entrada == "S"){
+                                break;
+                            }
+                            else {
+                                throw std::invalid_argument("Entrada invalida. Digite Novamente");
+                            }
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << "Erro: " << e.what() << std::endl;
+                        }
+                    }
 
                     if(entrada == "n" || entrada == "N"){
                         break;
@@ -784,9 +816,9 @@ void Controle::comptify(Usuario_Premium *premium){
 }
 
 void Controle::comptify(Usuario *usuario){
+    Playlist* playlist = nullptr;
     int opcao;
     int quantidade;
-    bool achei;
     while(true){
         std::cout << "0 - Sair" << std::endl;
         std::cout << "1 - Exibir perfil" << std::endl;
@@ -805,7 +837,7 @@ void Controle::comptify(Usuario *usuario){
         
         std::cin >> opcao;
         std::cout << std::endl;
-
+        char entrada_in[100];
         std::string entrada;
         int indice;
         switch (opcao){
@@ -829,7 +861,7 @@ void Controle::comptify(Usuario *usuario){
                     std::cout << "Suas músicas curtidas: " << std::endl;
                     quantidade = usuario->get_quant_musicas_curtidas();
                     for(int i=0; i<quantidade; i++){
-                        std::cout << usuario->get_musica_curtida(i)->get_titulo() << " - by " << usuario->get_musica_curtida(i)->get_artista() << std::endl;
+                        std::cout << (i + 1) << "- " << usuario->get_musica_curtida(i)->get_titulo() << " - by " << usuario->get_musica_curtida(i)->get_artista()->get_nome() << std::endl;
                     }
                 }
                 else {
@@ -842,7 +874,7 @@ void Controle::comptify(Usuario *usuario){
                     std::cout << "Seus artistas curtidos: " << std::endl;
                     quantidade = usuario->get_quant_artistas_curtidos();
                     for(int i=0; i<quantidade; i++){
-                        std::cout << usuario->get_artista_curtido(i)->get_nome() << std::endl;
+                        std::cout << (i + 1) << "- " << usuario->get_artista_curtido(i)->get_nome() << std::endl;
                     }
                 }
                 else {
@@ -880,61 +912,14 @@ void Controle::comptify(Usuario *usuario){
                         }
 
                         switch(opcoes) {
-                            int opcoes2;
                             case 0:
                                 break;
                             case 1: 
                                 std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
                                 std::cin >> opcoes;
                                 opcoes--;
-
-                                for (int i = 0; i < usuario->get_playlist(opcoes)->get_quant_musicas();) {
-                                    //Tocar musica enquanto
-                                    std::cout << "Voce esta ouvindo: " << usuario->get_playlist(opcoes)->get_musica(i)->get_titulo() << " - by " << usuario->get_playlist(opcoes)->get_musica(i)->get_artista() << std::endl;
-                                    std::cout << std::endl;
-
-                                    std::cout << "1 - Curtir música" << std::endl;
-                                    std::cout << "2 - Descurtir música" << std::endl;
-                                    std::cout << "3 - Proxima musica" << std::endl;
-                                    std::cout << "4 - Musica anterior" << std::endl;
-                                    std::cout << "0 - Voltar ao menu inicial" << std::endl;
-                                    std::cin >> opcoes2;
-
-                                    switch(opcoes2) {
-                                        case 0:
-                                            break;
-                                        case 1: 
-                                            usuario->curtir_musica(usuario->get_playlist(opcoes)->get_musica(i));
-                                            break;
-                                        case 2:
-                                            usuario->descurtir_musica(usuario->get_playlist(opcoes)->get_musica(i));
-                                            break;
-                                        case 3:
-                                            if (i + 1 < usuario->get_playlist(opcoes)->get_quant_musicas()) {
-                                                i = i + 1;
-                                                usuario->get_playlist(opcoes)->get_musica(i)->tocar_musica();
-                                            } 
-                                            else {
-                                                std::cout << "Você já está na última música da playlist." << std::endl;
-                                            }
-                                            break;
-                                        case 4:
-                                            if (i - 1 >= 0) {
-                                                i = i - 1;
-                                                usuario->get_playlist(opcoes)->get_musica(i)->tocar_musica();
-                                            } 
-                                            else {
-                                                std::cout << "Você já está na primeira música da playlist." << std::endl;
-                                            }
-                                            break;
-                                        
-                                    }
-
-                                    if (opcoes2 == 0) {
-                                        break;
-                                    }
-                                
-                                }  
+                                Playlist* playlist = Playlist::encontrar_playlist(usuario->get_playlist(opcoes)->get_nome());
+                                playlist->tocar_playlist(usuario);
                         }
                     }
                 }
@@ -950,6 +935,39 @@ void Controle::comptify(Usuario *usuario){
                     for(int i=0; i<quantidade; i++){
                         std::cout << usuario->get_playlist_curtida(i)->get_nome() << std::endl;
                     }
+
+                    while (true) {
+                        int opcoes;
+                        try {
+                            std::cout << "Deseja acessar alguma playlist?" << std::endl;
+                            std::cout << "1 - SIM " << std::endl;
+                            std::cout << "0 - NAO " << std::endl;
+                            std::cin >> opcoes;
+
+                            if (opcoes == 0) {
+                                break;
+                            }
+
+                            if (opcoes != 1) {
+                                throw std::invalid_argument("Opcao invalida. Digite novamente!");
+                            }
+                            
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << e.what() << std::endl;
+                        }
+
+                        switch(opcoes) {
+                            case 0:
+                                break;
+                            case 1: 
+                                std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
+                                std::cin >> opcoes;
+                                opcoes--;
+                                Playlist* playlist = Playlist::encontrar_playlist(usuario->get_playlist_curtida(opcoes)->get_nome());
+                                playlist->tocar_playlist(usuario);
+                        }
+                    }
                 }
                 else {
                     std::cout << "Voce ainda nao tem nenhuma playlist curtida! :(" << std::endl;
@@ -958,9 +976,9 @@ void Controle::comptify(Usuario *usuario){
                 break;
             case 8:
                 std::cout << "Digite o nome da música: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
                 try {
                     Musica* musica_procurada = Musica::encontrar_musica(entrada);
                     int escolher;
@@ -997,9 +1015,9 @@ void Controle::comptify(Usuario *usuario){
                 break;
             case 9:
                 std::cout << "Digite o nome do artista: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
                 try {
                     Artista* artista_procurado = Artista::encontrar_artista(entrada);
                     int escolher;
@@ -1038,56 +1056,50 @@ void Controle::comptify(Usuario *usuario){
                 break;
             case 10:
                 std::cout << "Digite o nome da playlist: " << std::endl;
-                std::getline(std::cin, entrada);
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                try {
-                    Playlist* playlist = Playlist::encontrar_playlist(entrada);
-                    int escolher;
-                    while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir playlist" << std::endl;
-                        std::cout << "2 - Escutar playlist" << std::endl;
-                        std::cout << "3 - Descurtir playlist" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                std::cin.ignore();
+                std::cin.getline(entrada_in, 100);
+                entrada = entrada_in;
 
-                        switch (escolher){
-                            case 1:
-                                usuario->curtir_playlist(playlist);
-                                break;
-                            case 2:
-                                usuario->tocar_playlist(playlist);
-                                break;
-                            case 3:
-                                usuario->descurtir_playlist(playlist);
-                                break;
-                            case 4:
-                                break;
-                            default:
-                                std::cout << "Digite uma das opções listadas." << std::endl;
-                        }
+                playlist = Playlist::encontrar_playlist(entrada);
+                std::cout << playlist->get_nome() << " - by " << playlist->get_usuario()->get_nome() << std::endl;
+                playlist->tocar_playlist(usuario);
 
-                        if (escolher == 4) {
-                            break;
-                        }
+                while (true) {
+                    int opcoes;
+
+                    std::cout << "O que deseja?" << std::endl;
+                    std::cout << "1 - Curtir playlist " << std::endl;
+                    std::cout << "2 - Descurtir playlist " << std::endl;
+                    std::cout << "0 - voltar " << std::endl;
+                    std::cin >> opcoes;
+
+                    if (opcoes == 0) {
+                        break;
                     }
-                } catch (std::invalid_argument &e){
-                    std::cout << e.what() << std::endl;
+
+                    switch(opcoes) {
+                        case 1:
+                            usuario->curtir_playlist(playlist);
+                            break;
+                        case 2: 
+                            usuario->descurtir_playlist(playlist);
+                            break;
+                    }
                 }
+
                 break;
             case 11:
                 std::cout << "Digite o nome do usuário: " << std::endl;
                 std::cin >> entrada;
                 try {
                     Usuario* usuario_procurado = Usuario::encontrar_usuario(entrada);
-                    //usuario_procurado->exibir_perfil();
+                    usuario_procurado->get_perfil()->exibir_usuario(usuario);
                 } catch (std::invalid_argument &e){
                     std::cout << e.what() << std::endl;
                 }
                 break;
             case 12:
-                usuario->criar_playlist();
+                usuario->criar_playlist(usuario);
                 break;
             case 13:
                 std::cout << "Essas são todas as músicas presentes no acervo do Comptify" << std::endl;
@@ -1099,8 +1111,45 @@ void Controle::comptify(Usuario *usuario){
                     std::cin >> indice;
                     Musica::get_musica_cadastrada(indice)->tocar_musica();
 
-                    std::cout << "Quer ouvir outra música? (s/n)" << std::endl;
-                    std::cin >> entrada;
+                    while(true) {
+                        try {
+                            std::cout << "Deseja curtir essa musica? (s/n)" << std::endl;
+                            std::cin >> entrada;
+
+                            if (entrada == "s" || entrada == "S") {
+                                usuario->curtir_musica(Musica::get_musica_cadastrada(indice));
+                            }
+                            else if (entrada != "n" || entrada != "N" || entrada != "s" || entrada != "S") {
+                                throw std::invalid_argument("Entrada invalida. Digite Novamente!");
+                            }
+
+                            break;
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << "Erro: " << e.what() << std::endl;
+                        }
+                    }
+
+                    while(true) {
+                        try {
+                            std::cout << "Quer ouvir outra música? (s/n)" << std::endl;
+                            std::cin >> entrada;
+
+                            if(entrada == "n" || entrada == "N"){
+                                break;
+                            }
+                            else if(entrada == "s" || entrada == "S"){
+                                break;
+                            }
+                            else {
+                                throw std::invalid_argument("Entrada invalida. Digite Novamente");
+                            }
+                        }
+                        catch(std::invalid_argument &e) {
+                            std::cerr << "Erro: " << e.what() << std::endl;
+                        }
+                    }
+
 
                     if(entrada == "n" || entrada == "N"){
                         break;

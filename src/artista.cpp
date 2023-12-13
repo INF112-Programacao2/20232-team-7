@@ -48,7 +48,8 @@ void Artista::publicar_album(std::string titulo, std::string genero) {
 }
 
 Artista* Artista::encontrar_artista(std::string nome){
-    for (int i = 0; i < artistas_cadastrados.size(); i++){
+    int quant = artistas_cadastrados.size();
+    for (int i = 0; i < quant; i++){
         if(nome == artistas_cadastrados[i]->get_nome()){
             return artistas_cadastrados[i];
         }

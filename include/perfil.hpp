@@ -22,13 +22,12 @@ class Perfil {
         void exibir_seguindo();
         void seguir(Usuario* usuario);
         void parar_seguir(Usuario* usuario);
-        void parar_seguindo(Usuario* usuario);
 
         void tocar_musica_perfil();
-        void exibir_musicas_curtidas();
-        void exibir_artistas_curtidos();
-        void exibir_playlist_curtidas();
-        void exibir_playlists();
+        void exibir_musicas_curtidas(Usuario* usuario_visualizador);
+        void exibir_artistas_curtidos(Usuario* usuario_visualizador);
+        void exibir_playlist_curtidas(Usuario* usuario_visualizador);
+        void exibir_playlists(Usuario* usuario_visualizador);
         void exibir_usuario(Usuario* usuario);
 };
 

@@ -11,6 +11,7 @@
 class Artista;
 class Usuario_Premium;
 class Perfil;
+class Playlist;
 
 class Usuario {
     protected:
@@ -24,7 +25,6 @@ class Usuario {
         std::vector<Artista*> _artistas_curtidos;
         std::vector<Playlist*> _playlists_curtidas;
         std::vector<Playlist*> _playlists;
-        Musica *_musica_perfil;
     public:
         Usuario(std::string email, std::string nome);
         ~Usuario();
@@ -41,12 +41,12 @@ class Usuario {
         Playlist* get_playlist_curtida(int posicao); //
         int get_quant_playlists();  //
         Playlist* get_playlist(int posicao);
-        Musica* get_musica_perfil();
 
         void set_nome(std::string nome);  //
         void set_email(std::string email);  //
 
         Perfil* get_perfil();
+        Usuario_Premium* retorna_premium();
 
         void curtir_musica(Musica *musica); //
         void descurtir_musica(Musica *musica);
@@ -57,10 +57,7 @@ class Usuario {
         void curtir_artista(Artista *artista); //
         void descurtir_artista(Artista *artista);
 
-        void criar_playlist();
-
-        virtual void tocar_playlist(Playlist *playlist);       // Verificar se realmente será void.
-        virtual void definir_musica_perfil(Musica *musica);
+        void criar_playlist(Usuario* usuario);
 
         static Usuario* encontrar_usuario(std::string nome);
 };

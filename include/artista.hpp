@@ -14,6 +14,7 @@ class Artista : public Usuario_Premium {
         static std::vector<Artista*> artistas_cadastrados;
         std::vector<Musica*> _musicas_publicadas;
         std::vector<Album*> _albuns_publicados;
+
     public:
         Artista(std::string email, std::string nome);
         ~Artista();

@@ -22,12 +22,23 @@ Usuario_Premium::~Usuario_Premium() {
 void Usuario_Premium::tocar_playlist(Playlist *playlist) {       
     // Verificar se realmente será void.
 }
+
 void Usuario_Premium::definir_musica_perfil(Musica *musica) {
-    ///////////////////////////////////////////////////////
+    _musica_perfil = musica;
+}
+
+Musica* Usuario_Premium::get_musica_perfil() {
+    if (get_premium()) {
+        return _musica_perfil;
+    }
+    else {
+        return nullptr;
+    }
 }
 
 Usuario_Premium* Usuario_Premium::encontrar_usuario(std::string nome){
-    for (int i = 0; i < premium_cadastrados.size(); i++){
+    int tamanho = premium_cadastrados.size();
+    for (int i = 0; i < tamanho; i++){
         if(nome == premium_cadastrados[i]->get_nome()){
             return premium_cadastrados[i];
         }

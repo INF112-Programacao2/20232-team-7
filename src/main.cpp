@@ -21,6 +21,7 @@ int main() {
     Controle comptify;
  
     char opcao;
+    int tamanho = 0;
 
     while(true) {
         bool controle = true;
@@ -120,7 +121,8 @@ int main() {
                             std::cout << "Digite seu e-mail: " << std::endl;
                             std::cin >> email;
 
-                            for (int i = 0; i < usuarios.size(); i++) {
+                            tamanho = usuarios.size();
+                            for (int i = 0; i < tamanho; i++) {
                                 if (usuarios[i]->get_email() == email) {
                                     posicao = i;
                                     break;
@@ -130,7 +132,7 @@ int main() {
                                 }
                             }
 
-                            if (cont == usuarios.size()) {
+                            if (cont == tamanho) {
                                 throw std::invalid_argument("E-mail incorreto ou nao cadastrado. Digite novamente ou cadastre-se para utilizar o Computify! ;)");
                             }
                             break;

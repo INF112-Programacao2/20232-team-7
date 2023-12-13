@@ -25,7 +25,7 @@ class Musica{
         //GETTERS
         std::string get_titulo();
         int get_segundos();
-        std::string get_artista();
+        Artista* get_artista();
         bool get_explicito();
         std::string get_caminho();
         static void get_musicas_cadastradas();

@@ -26,8 +26,8 @@ std::string Musica::get_titulo(){
     return _titulo;
 }
 
-std::string Musica::get_artista() {
-    return _artista->get_nome();
+Artista* Musica::get_artista() {
+    return _artista;
 }
 
 int Musica::get_segundos(){
@@ -43,7 +43,8 @@ std::string Musica::get_caminho(){
 }
 
 Musica* Musica::encontrar_musica(std::string nome){
-    for (int i = 0; i < musicas_cadastradas.size(); i++){
+    int tamanho = musicas_cadastradas.size();
+    for (int i = 0; i < tamanho; i++){
         if(nome == musicas_cadastradas[i]->get_titulo()){
             return musicas_cadastradas[i];
         }
@@ -53,8 +54,9 @@ Musica* Musica::encontrar_musica(std::string nome){
 }
 
 void Musica::get_musicas_cadastradas(){
-    for (int i = 0; i < musicas_cadastradas.size(); i++){
-        std::cout << (i + 1) << "- " << musicas_cadastradas[i]->get_titulo() << std::endl;
+    int tamanho = musicas_cadastradas.size();
+    for (int i = 0; i < tamanho; i++){
+        std::cout << (i + 1) << "- " << musicas_cadastradas[i]->get_titulo() << " - by " << musicas_cadastradas[i]->get_artista()->get_nome() << std::endl;
     }
 }
 
@@ -71,9 +73,14 @@ void Musica::tocar_musica(){
     }
     sf::Sound som(musica);
 
-    std::cout << "Tocando agora\n";
-    std::cout << this->get_titulo() << std::endl;
-    std::cout << this->get_artista() << std::endl;
+    std::cout << std::endl;
+    std::cout << "▕▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▏" << std::endl;
+    std::cout << "  Tocando agora: " << this->get_titulo() << " - by " << this->get_artista()->get_nome() << std::endl;
+    std::cout << std::endl;
+    std::cout << "           ▄ █ ▄ █ ▄ ▄ █ ▄ █ ▄" << std::endl;
+    std::cout << "           ●───────────────────" << std::endl;
+    std::cout << "             ◄◄ ----▌▌----►►" << std::endl;
+    std::cout << "▕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▏" << std::endl;
     std::cout << std::endl;
     
     //toca o arquivo
