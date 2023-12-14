@@ -4,41 +4,39 @@
 #include "../include/playlist.hpp"
 #include "../include/usuario.hpp"
 
+//vector static com todas as playlists cadastradas
 std::vector<Playlist*> Playlist::playlists_cadastradas;
 
 Playlist::Playlist(std::string nome, Usuario* usuario){
+    //atribui os dados
     this->_nome = nome;
     std::vector<Musica*> _musicas;
     _usuario = usuario;
-    playlists_cadastradas.push_back(this);
+    playlists_cadastradas.push_back(this); //insere no vector static a nova playlist
 }
 
 Playlist::~Playlist(){
-    _musicas.clear();
+    _musicas.clear(); //limpa o vector
 }
 
 std::string Playlist::get_nome(){
-    return this->_nome;
+    return this->_nome; //retorna o nome
 }
 
 Usuario* Playlist::get_usuario() {
-    return this-> _usuario;
-}
-
-bool Playlist::get_visibilidade(){
-    return this->_visibilidade;
+    return this-> _usuario; //retorna o usuário que criou a playlist
 }
 
 int Playlist::get_quant_musicas(){
-    return _musicas.size();
+    return _musicas.size(); //retorna quantas músicas tem na playlist
 }
 
 Musica* Playlist::get_musica(int posicao){
-    return _musicas[posicao];
+    return _musicas[posicao]; //retorna uma música específica da playlist
 }
 
 void Playlist::adicionar_musica(Musica* musica){
-    _musicas.push_back(musica);
+    _musicas.push_back(musica); //adiciona uma música na playlist
 }
 
 void Playlist::apagar_musica(int posicao){
@@ -55,6 +53,7 @@ void Playlist::apagar_musica(int posicao){
 }
 
 Playlist* Playlist::encontrar_playlist(std::string nome){
+    //encontra a playlist dentre todas as playlists cadastradas 
     int tamanho = playlists_cadastradas.size();
     for (int i = 0; i < tamanho; i++){
         if(nome == playlists_cadastradas[i]->get_nome()){
@@ -67,11 +66,11 @@ Playlist* Playlist::encontrar_playlist(std::string nome){
 
 void Playlist::tocar_playlist(Usuario* usuario) {
     int opcoes;
-    int qtde_musicas = this-> get_quant_musicas();
+    int qtde_musicas = this-> get_quant_musicas(); //máximo
     for (int i = 0; i < qtde_musicas;) {
-        this->get_musica(i)->tocar_musica();
+        this->get_musica(i)->tocar_musica(); //o que faz o som funcionar
 
-        while (opcoes != 3 || opcoes != 4) {
+        while (opcoes != 3 || opcoes != 4) { //menu
             std::cout << "1 - Curtir música" << std::endl;
             std::cout << "2 - Descurtir música" << std::endl;
             std::cout << "3 - Curtir artista" << std::endl;
@@ -96,7 +95,7 @@ void Playlist::tocar_playlist(Usuario* usuario) {
                 case 4:
                     usuario->descurtir_artista(this->get_musica(i)->get_artista());
                     break;
-                case 5:
+                case 5: //pula e toca
                     if (i + 1 < qtde_musicas) {
                         i = i + 1;
                         this->get_musica(i)->tocar_musica();
@@ -105,7 +104,7 @@ void Playlist::tocar_playlist(Usuario* usuario) {
                         std::cout << "Você já está na última música da playlist." << std::endl;
                     }
                     break;
-                case 6:
+                case 6: //volta e toca
                     if (i - 1 >= 0) {
                         i = i - 1;
                         this->get_musica(i)->tocar_musica();

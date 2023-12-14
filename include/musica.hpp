@@ -10,7 +10,8 @@ class Artista;
 
 class Musica{
     private:
-        static std::vector<Musica*> musicas_cadastradas;
+        //DADOS
+        static std::vector<Musica*> musicas_cadastradas; //COMPOSIÇÃO
         std::string _titulo;
         Artista* _artista;
         int _segundos;
@@ -18,8 +19,10 @@ class Musica{
         std::string _generos;
         std::string _caminho;
     public:
+        //CONSTRUTOR
         Musica(std::string titulo, int segundos, bool explicito, std::string generos, Artista* artista, std::string caminho);
 
+        //SETTER
         void set_titulo(std::string titulo);
 
         //GETTERS
@@ -31,10 +34,9 @@ class Musica{
         static void get_musicas_cadastradas();
         static Musica* get_musica_cadastrada(int indice);
 
+        //MÉTODOS
         static Musica* encontrar_musica(std::string nome);
-
         void tocar_musica();
-
 
 };
 

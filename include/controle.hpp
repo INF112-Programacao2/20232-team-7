@@ -5,6 +5,7 @@
 class Controle{
     public:
         Controle();
+        //POLIMORFISMO
         void comptify(Artista *artista);
         void comptify(Usuario_Premium *premium);
         void comptify(Usuario *usuario);

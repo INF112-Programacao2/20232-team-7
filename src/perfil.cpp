@@ -8,29 +8,32 @@
 
 
 Perfil::Perfil(Usuario* usuario){
+    //define qual usuário é o dono do perfil
     this->_usuario = usuario;
+    //inicializa os vectors
     std::vector<Usuario*> _seguidores;
     std::vector<Usuario*> _seguindo;
 }
 
 Perfil::~Perfil(){
+    //limpa os vectors
     _seguidores.clear();
     _seguindo.clear();
 }
 
 Usuario* Perfil::get_usuario(){
-    return this->_usuario;
+    return this->_usuario; //retorna de qual usuário é o perfil
 }
 
 int Perfil::get_quant_seguidores(){
-    return _seguidores.size();
+    return _seguidores.size(); //retorna quantos seguidores ele tem
 }
 
 int Perfil::get_quant_seguindo(){
-    return _seguindo.size();
+    return _seguindo.size(); //retorna quantas pessoas ele está seguindo
 }
 
-void Perfil::exibir_seguidores(){
+void Perfil::exibir_seguidores(){ //exibe todos os seguidores
     int tamanho = _seguidores.size();
     if (tamanho != 0){
         for (int i = 0; i < tamanho; i++){
@@ -41,7 +44,7 @@ void Perfil::exibir_seguidores(){
     }
 }
 
-void Perfil::exibir_seguindo(){
+void Perfil::exibir_seguindo(){ //exibe todas as pessoas que ele segue
     int tamanho = _seguindo.size();
     if (tamanho != 0){
         for (int i = 0; i < tamanho; i++){
@@ -54,12 +57,14 @@ void Perfil::exibir_seguindo(){
 
 void Perfil::seguir(Usuario* usuario){
     for (int i = 0; i < usuario->get_perfil()->get_quant_seguindo(); i++) {
+        //impede de seguir mais de uma vez o mesmo usuário
         if (usuario->get_perfil()->_seguindo[i]->get_nome() == this-> get_usuario()->get_nome()) {
             std::cerr << "Voce ja segue esse usuario!!!" << std::endl;
             return;
         }
     }
 
+    //coloca cada um no determinado vetor de seguidor e seguindo
     this-> _seguidores.push_back(usuario);
     usuario->get_perfil()->_seguindo.push_back(this-> _usuario);
 
@@ -75,6 +80,7 @@ void Perfil::parar_seguir(Usuario* usuario) {
         }
     }
 
+    //verifica se o usuário que vai parar de seguir segue ou não o usuário em questão
     if (cont_seguindo == seguindo) {
         std::cerr << "Voce nao segue esse usuario!!!" << std::endl;
         return;
@@ -109,37 +115,35 @@ void Perfil::parar_seguir(Usuario* usuario) {
         usuario->get_perfil()->_seguindo.pop_back();
 
         std::cout << "Voce deixou de seguir esse usuario!" << std::endl;
-    } 
-    else {
-        std::cout << "Voce nao estava seguindo esse usuario!" << std::endl;
     }
 }
 
 void Perfil::tocar_musica_perfil(){
-    if (get_usuario()->get_premium() && _usuario->retorna_premium()->get_musica_perfil() != nullptr) {
-        std::cout << "Tocando a música " << _usuario->retorna_premium()->get_musica_perfil() << std::endl;
+    //verifica se o usuário é premium e não tem uma música de perfil definida
+    if (get_usuario()->get_premium() && _usuario->retorna_premium()->get_musica_perfil() == nullptr) {
+        std::cerr << "O usuario nao adicionou musica ao perfil! :(" << std::endl;
     }
-    else if (!get_usuario()->get_premium()){
+    else if (!get_usuario()->get_premium()){ //se não é premium
         std::cerr << "O usuario nao e premium! :(" << std::endl;
     }
-    else {
-        std::cerr << "O usuario nao adicionou musica ao perfil! :(" << std::endl;
+    else { //imprime qual música ele escolheu
+        std::cout << "Tocando a música " << _usuario->retorna_premium()->get_musica_perfil() << std::endl;
     }
 }
 void Perfil::exibir_musicas_curtidas(Usuario* usuario_visualizador){
-    int tamanho = _usuario->get_quant_musicas_curtidas();
+    int tamanho = _usuario->get_quant_musicas_curtidas(); //pega a quantidade
     std::string opcao;
 
-    if (tamanho > 0) {
+    if (tamanho > 0) { //mostra quais são
         for (int i = 0; i < tamanho; i++){
             std::cout << (i + 1) << "- " <<get_usuario()->get_musica_curtida(i)->get_titulo() << " by " << get_usuario()->get_musica_curtida(i)->get_artista()->get_nome() << std::endl;
         }
 
         while(true) {
-            try {
+            try { //pergunta se quer escutar
                 std::cout << "Deseja escutar alguma musica? (s/n)" << std::endl;
                 std::cin >> opcao;
-
+                //impede de digitar algo diferente do esperado
                 if (opcao != "s" && opcao != "S" && opcao != "n" && opcao != "N") {
                     throw std::invalid_argument("Entrada invalida. Digite novamente!");
                 }
@@ -151,7 +155,7 @@ void Perfil::exibir_musicas_curtidas(Usuario* usuario_visualizador){
             }
         }
 
-        if (opcao == "s" || opcao == "S") {
+        if (opcao == "s" || opcao == "S") { //se ele quer escutar
             int indice;
             std::string entrada;
             std::cout << "Digite o indice da musica que deseja escutar: " <<std::endl;
@@ -160,7 +164,7 @@ void Perfil::exibir_musicas_curtidas(Usuario* usuario_visualizador){
 
             this->_usuario->get_musica_curtida(indice)->tocar_musica();
 
-            while(true) {
+            while(true) { //menu
                 std::cout << "O que deseja fazer?" << std::endl;
                 std::cout << "1- Curtir musica " << std::endl;
                 std::cout << "2- Descurtir musica " << std::endl;
@@ -192,10 +196,10 @@ void Perfil::exibir_musicas_curtidas(Usuario* usuario_visualizador){
     }
 }
 void Perfil::exibir_artistas_curtidos(Usuario* usuario_visualizador){
-    int tamanho = _usuario->get_quant_artistas_curtidos();
+    int tamanho = _usuario->get_quant_artistas_curtidos(); //pega quantidade
     std::string opcao;
 
-    if (tamanho > 0) {
+    if (tamanho > 0) { //exibe todos
         for (int i = 0; i < tamanho; i++){
             std::cout << (i + 1) << "- " <<get_usuario()->get_artista_curtido(i)->get_nome() << std::endl;
         }
@@ -204,7 +208,7 @@ void Perfil::exibir_artistas_curtidos(Usuario* usuario_visualizador){
             try {
                 std::cout << "Deseja acessar algum artista? (s/n)" << std::endl;
                 std::cin >> opcao;
-
+                //força a digitar o esperado
                 if (opcao != "s" && opcao != "S" && opcao != "n" && opcao != "N") {
                     throw std::invalid_argument("Entrada invalida. Digite novamente!");
                 }
@@ -221,7 +225,7 @@ void Perfil::exibir_artistas_curtidos(Usuario* usuario_visualizador){
             std::cout << "Digite o indice do artista que deseja visualizar o perfil: " <<std::endl;
             std::cin >> indice;
             indice--;
-
+            //mostra o escolhido
             this->_usuario->get_artista_curtido(indice)->get_perfil()->exibir_usuario(usuario_visualizador);
         }
         else if (opcao == "n" || opcao == "N") {
@@ -233,10 +237,10 @@ void Perfil::exibir_artistas_curtidos(Usuario* usuario_visualizador){
     }
 }
 void Perfil::exibir_playlist_curtidas(Usuario* usuario_visualizador){
-    int tamanho = _usuario->get_quant_playlists_curtidas();
+    int tamanho = _usuario->get_quant_playlists_curtidas(); //pega a quantidade
     std::string opcao;
     if (tamanho > 0) {
-        for (int i = 0; i < tamanho; i++){
+        for (int i = 0; i < tamanho; i++){ //exibe todas
             std::cout << (i + 1) << "- " << get_usuario()->get_playlist_curtida(i)->get_nome() << " - by " << get_usuario()->get_playlist_curtida(i)->get_usuario()->get_nome() << std::endl;
         }
 
@@ -244,7 +248,7 @@ void Perfil::exibir_playlist_curtidas(Usuario* usuario_visualizador){
             try {
                 std::cout << "Deseja acessar alguma playlist? (s/n)" << std::endl;
                 std::cin >> opcao;
-
+                //força a digitar o esperado
                 if (opcao != "s" && opcao != "S" && opcao != "n" && opcao != "N") {
                     throw std::invalid_argument("Entrada invalida. Digite novamente!");
                 }
@@ -261,7 +265,7 @@ void Perfil::exibir_playlist_curtidas(Usuario* usuario_visualizador){
             std::cout << "Digite o indice da playlist que deseja escutar: " <<std::endl;
             std::cin >> indice;
             indice--;
-
+            //faz o que o usuário selecionou
             this->get_usuario()->get_playlist_curtida(indice)->tocar_playlist(usuario_visualizador);
         }
         else if (opcao == "n" || opcao == "N") {
@@ -273,11 +277,11 @@ void Perfil::exibir_playlist_curtidas(Usuario* usuario_visualizador){
     }
 }
 void Perfil::exibir_playlists(Usuario* usuario_visualizador){
-    int tamanho = _usuario->get_quant_playlists();
+    int tamanho = _usuario->get_quant_playlists(); //pega a quantidade
     std::string opcao;
 
     if (tamanho > 0) {
-        for (int i = 0; i < tamanho; i++){
+        for (int i = 0; i < tamanho; i++){ //exibe todas
             std::cout << (i + 1) << "- " << get_usuario()->get_playlist(i)->get_nome() << std::endl;
         }
 
@@ -285,7 +289,7 @@ void Perfil::exibir_playlists(Usuario* usuario_visualizador){
 
             std::cout << "Deseja acessar alguma playlist? (s/n)" << std::endl;
             std::cin >> opcao;
-
+            //força o usuário a digitar o esperado
             if (opcao != "s" && opcao != "S" && opcao != "n" && opcao != "N") {
                 std::cerr << "Erro: entrada invalida. Digite novamente!" << std::endl;
             }
@@ -299,7 +303,7 @@ void Perfil::exibir_playlists(Usuario* usuario_visualizador){
             std::cout << "Digite o indice da playlist que deseja escutar: " <<std::endl;
             std::cin >> indice;
             indice--;
-
+            //faz o que o usuário pediu
             this->get_usuario()->get_playlist(indice)->tocar_playlist(usuario_visualizador);
         }
         else if (opcao == "n" || opcao == "N") {
@@ -315,7 +319,6 @@ void Perfil::exibir_usuario(Usuario* usuario_visualizador){
         Musica* musica_perfil = this->get_usuario()->retorna_premium()->get_musica_perfil();
         sf::SoundBuffer musica;
 
-            // Tente carregar o arquivo de áudio (substitua "caminho/do/arquivo.mp3" pelo caminho real do seu arquivo)
         if (!musica.loadFromFile(musica_perfil->get_caminho())) {
             throw std::runtime_error("Não foi possível carregar o arquivo de áudio");
         }

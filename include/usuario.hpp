@@ -14,7 +14,8 @@ class Perfil;
 class Playlist;
 
 class Usuario {
-    protected:
+    protected: //para que a classe filha usuário premium tenha acesso
+        //DADOS
         static std::vector<Usuario*> usuarios_cadastrados;
         std::string _nome_usuario;
         Perfil* _perfil;
@@ -26,26 +27,31 @@ class Usuario {
         std::vector<Playlist*> _playlists_curtidas;
         std::vector<Playlist*> _playlists;
     public:
+        //CONSTRUTOR E DESTRUTOR
         Usuario(std::string email, std::string nome);
         ~Usuario();
 
-        std::string get_nome(); //
-        std::string get_email(); //
+        //GETTERS
+        std::string get_nome();
+        std::string get_email();
         bool get_premium();
         bool get_artista();
-        int get_quant_musicas_curtidas();  //
-        Musica* get_musica_curtida(int posicao);  //
-        int get_quant_artistas_curtidos();  //
-        Artista* get_artista_curtido(int posicao); //
-        int get_quant_playlists_curtidas();  //
-        Playlist* get_playlist_curtida(int posicao); //
-        int get_quant_playlists();  //
+        int get_quant_musicas_curtidas();
+        Musica* get_musica_curtida(int posicao);
+        int get_quant_artistas_curtidos();
+        Artista* get_artista_curtido(int posicao);
+        int get_quant_playlists_curtidas();
+        Playlist* get_playlist_curtida(int posicao);
+        int get_quant_playlists();
         Playlist* get_playlist(int posicao);
-
-        void set_nome(std::string nome);  //
-        void set_email(std::string email);  //
-
         Perfil* get_perfil();
+
+        //SETTERS
+        void set_nome(std::string nome);
+        void set_email(std::string email);
+
+
+        //MÉTODOS
         Usuario_Premium* retorna_premium();
 
         void curtir_musica(Musica *musica); //
