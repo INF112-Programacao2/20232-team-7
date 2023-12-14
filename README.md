@@ -26,7 +26,7 @@
   <code>git clone https://github.com/INF112-Programacao2/20232-team-7.git</code>
 
   <li>Navegue até o diretório do projeto.</li>
-  <code>cd 20232-tean-7</code>
+  <code>cd 20232-team-7</code>
 
   <li>Execute o Makefile para compilar o programa.</li>
   <code>make</code>
