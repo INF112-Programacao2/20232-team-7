@@ -12,34 +12,45 @@
 
 Controle::Controle(){}
 
+//versão da função para artista
 void Controle::comptify(Artista *artista){
     //variáveis de controle
     Playlist* playlist = nullptr;
+    std::string string;
     int opcao;
     int quantidade;
     while(true){ //menu 
-        std::cout << "0 - Sair" << std::endl;
-        std::cout << "1 - Exibir perfil" << std::endl;
-        std::cout << "2 - Alterar nome" << std::endl;
-        std::cout << "3 - Alterar e-mail" << std::endl;
-        std::cout << "4 - Músicas curtidas" << std::endl;
-        std::cout << "5 - Artistas curtidos" << std::endl;
-        std::cout << "6 - Suas playlists" << std::endl;
-        std::cout << "7 - Playlists curtidas" << std::endl;
-        std::cout << "8 - Buscar música" << std::endl;
-        std::cout << "9 - Buscar artista" << std::endl;
-        std::cout << "10 - Buscar playlist" << std::endl;
-        std::cout << "11 - Buscar outro usuário" << std::endl;
-        std::cout << "12 - Criar playlist" << std::endl;
-        std::cout << "13 - Escutar músicas" << std::endl;
-        std::cout << "14 - Definir música de perfil" << std::endl;
-        std::cout << "15 - Publicar música" << std::endl;
-        std::cout << "16 - Publicar álbum" << std::endl;
-        std::cout << "17 - Minhas músicas" << std::endl;
-        std::cout << "18 - Meus álbuns" << std::endl;
+        while(true){
+            std::cout << "0 - Sair" << std::endl;
+            std::cout << "1 - Exibir perfil" << std::endl;
+            std::cout << "2 - Alterar nome" << std::endl;
+            std::cout << "3 - Alterar e-mail" << std::endl;
+            std::cout << "4 - Músicas curtidas" << std::endl;
+            std::cout << "5 - Artistas curtidos" << std::endl;
+            std::cout << "6 - Suas playlists" << std::endl;
+            std::cout << "7 - Playlists curtidas" << std::endl;
+            std::cout << "8 - Buscar música" << std::endl;
+            std::cout << "9 - Buscar artista" << std::endl;
+            std::cout << "10 - Buscar playlist" << std::endl;
+            std::cout << "11 - Buscar outro usuário" << std::endl;
+            std::cout << "12 - Criar playlist" << std::endl;
+            std::cout << "13 - Escutar músicas" << std::endl;
+            std::cout << "14 - Definir música de perfil" << std::endl;
+            //opções exclusivas de artistas
+            std::cout << "15 - Publicar música" << std::endl;
+            std::cout << "16 - Publicar álbum" << std::endl;
+            std::cout << "17 - Minhas músicas" << std::endl;
+            std::cout << "18 - Meus álbuns" << std::endl;
 
-        std::cin >> opcao;
-        std::cout << std::endl;
+            std::cin >> string;
+            std::cout << std::endl;
+            try {
+                opcao = stoi(string); //força o usuário a digitar um número
+                break;
+            } catch (const std::invalid_argument& ia) {
+                std::cerr << "Erro: Digite um número" << std::endl;
+            }
+        }
 
         //variáveis que podem ser digitadas em entradas do usuário
         std::string genero;
@@ -82,7 +93,7 @@ void Controle::comptify(Artista *artista){
                 }
                 std::cout << std::endl;
                 break;
-            case 5:
+            case 5: //exibe os artistas curtidos
                 if (artista->get_quant_artistas_curtidos() > 0) {
                     std::cout << "Seus artistas curtidos: " << std::endl;
                     quantidade = artista->get_quant_artistas_curtidos();
@@ -95,7 +106,7 @@ void Controle::comptify(Artista *artista){
                 }
                 std::cout << std::endl;
                 break;
-            case 6:
+            case 6: //exibe as playlists do usuário
                 if (artista->get_quant_playlists() > 0) {
                     std::cout << "Suas playlists: " << std::endl;
                     quantidade = artista->get_quant_playlists();
@@ -106,10 +117,19 @@ void Controle::comptify(Artista *artista){
                     while (true) {
                         int opcoes;
                         try {
-                            std::cout << "Deseja acessar alguma playlist?" << std::endl;
-                            std::cout << "1 - SIM " << std::endl;
-                            std::cout << "0 - NAO " << std::endl;
-                            std::cin >> opcoes;
+                            while(true){
+                                std::cout << "Deseja acessar alguma playlist?" << std::endl;
+                                std::cout << "1 - SIM " << std::endl;
+                                std::cout << "0 - NAO " << std::endl;
+                                std::cin >> string;
+                                std::cout << std::endl;
+                                try {
+                                    opcoes = stoi(string); //força a digitar um numero
+                                    break;
+                                } catch (const std::invalid_argument& ia) {
+                                    std::cerr << "Erro: Digite um número" << std::endl;
+                                }
+                            }
 
                             if (opcoes == 0) {
                                 break;
@@ -128,8 +148,17 @@ void Controle::comptify(Artista *artista){
                             case 0:
                                 break;
                             case 1: 
-                                std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
-                                std::cin >> opcoes;
+                                while(true){
+                                    std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
+                                    std::cin >> string;
+                                    std::cout << std::endl;
+                                    try {
+                                        opcoes = stoi(string);
+                                        break;
+                                    } catch (const std::invalid_argument& ia) {
+                                        std::cerr << "Erro: Digite um número" << std::endl;
+                                    }
+                                }
                                 opcoes--;
                                 Playlist* playlist = Playlist::encontrar_playlist(artista->get_playlist(opcoes)->get_nome());
 
@@ -143,7 +172,7 @@ void Controle::comptify(Artista *artista){
                 }
                 std::cout << std::endl;
                 break;
-            case 7:
+            case 7: //playlists curtidas
                 if (artista->get_quant_playlists_curtidas() > 0) {
                     std::cout << "Suas playlists curtidas: " << std::endl;
                     quantidade = artista->get_quant_playlists_curtidas();
@@ -154,10 +183,19 @@ void Controle::comptify(Artista *artista){
                     while (true) {
                         int opcoes;
                         try {
-                            std::cout << "Deseja acessar alguma playlist?" << std::endl;
-                            std::cout << "1 - SIM " << std::endl;
-                            std::cout << "0 - NAO " << std::endl;
-                            std::cin >> opcoes;
+                            while(true){
+                                std::cout << "Deseja acessar alguma playlist?" << std::endl;
+                                std::cout << "1 - SIM " << std::endl;
+                                std::cout << "0 - NAO " << std::endl;
+                                std::cin >> string;
+                                std::cout << std::endl;
+                                try {
+                                    opcoes = stoi(string);
+                                    break;
+                                } catch (const std::invalid_argument& ia) {
+                                    std::cerr << "Erro: Digite um número" << std::endl;
+                                }
+                            }
 
                             if (opcoes == 0) {
                                 break;
@@ -176,8 +214,18 @@ void Controle::comptify(Artista *artista){
                             case 0:
                                 break;
                             case 1: 
-                                std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
-                                std::cin >> opcoes;
+                                while(true){
+                                    std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
+                                    std::cin >> string;
+                                    std::cout << std::endl;
+                                    try {
+                                        opcoes = stoi(string);
+                                        break;
+                                    } catch (const std::invalid_argument& ia) {
+                                        std::cerr << "Erro: Digite um número" << std::endl;
+                                    }
+
+                                }
                                 opcoes--;
                                 Playlist* playlist = Playlist::encontrar_playlist(artista->get_playlist_curtida(opcoes)->get_nome());
                                 playlist->tocar_playlist(artista);
@@ -198,12 +246,22 @@ void Controle::comptify(Artista *artista){
                     Musica* musica_procurada = Musica::encontrar_musica(entrada);
                     int escolher;
                     while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir música" << std::endl;
-                        std::cout << "2 - Ouvir música" << std::endl;
-                        std::cout << "3 - Descurtir música" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                        while (true){
+                            std::cout << "O que deseja fazer? " << std::endl;
+                            std::cout << "1 - Curtir música" << std::endl;
+                            std::cout << "2 - Ouvir música" << std::endl;
+                            std::cout << "3 - Descurtir música" << std::endl;
+                            std::cout << "4 - Voltar" << std::endl;
+                            std::cin >> string;
+                            std::cout << std::endl;
+                            try {
+                                escolher = stoi(string);
+                                break;
+                            } catch (const std::invalid_argument& ia) {
+                                std::cerr << "Erro: Digite um número" << std::endl;
+                            }
+
+                        }
                         switch (escolher){
                             case 1:
                                 artista->curtir_musica(musica_procurada);
@@ -237,12 +295,21 @@ void Controle::comptify(Artista *artista){
                     Artista* artista_procurado = Artista::encontrar_artista(entrada);
                     int escolher;
                     while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir artista" << std::endl;
-                        std::cout << "2 - Ver perfil do artista" << std::endl;
-                        std::cout << "3 - Descurtir artista" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                        while(true){
+                            std::cout << "O que deseja fazer? " << std::endl;
+                            std::cout << "1 - Curtir artista" << std::endl;
+                            std::cout << "2 - Ver perfil do artista" << std::endl;
+                            std::cout << "3 - Descurtir artista" << std::endl;
+                            std::cout << "4 - Voltar" << std::endl;
+                            std::cin >> string;
+                            std::cout << std::endl;
+                            try {
+                                escolher = stoi(string);
+                                break;
+                            } catch (const std::invalid_argument& ia) {
+                                std::cerr << "Erro: Digite um número" << std::endl;
+                            }
+                        }
 
                         switch (escolher){
                             case 1:
@@ -281,12 +348,20 @@ void Controle::comptify(Artista *artista){
 
                 while (true) {
                     int opcoes;
-
-                    std::cout << "O que deseja?" << std::endl;
-                    std::cout << "1 - Curtir playlist " << std::endl;
-                    std::cout << "2 - Descurtir playlist " << std::endl;
-                    std::cout << "0 - voltar " << std::endl;
-                    std::cin >> opcoes;
+                    while(true){
+                        std::cout << "O que deseja?" << std::endl;
+                        std::cout << "1 - Curtir playlist " << std::endl;
+                        std::cout << "2 - Descurtir playlist " << std::endl;
+                        std::cout << "0 - voltar " << std::endl;
+                        std::cin >> string;
+                        std::cout << std::endl;
+                        try {
+                            opcoes = stoi(string);
+                            break;
+                        } catch (const std::invalid_argument& ia) {
+                            std::cerr << "Erro: Digite um número" << std::endl;
+                        }
+                    }
 
                     if (opcoes == 0) {
                         break;
@@ -415,7 +490,7 @@ void Controle::comptify(Artista *artista){
                 std::cout << "Digite o genero da musica: " << std::endl;
                 std::cin >> genero;
 
-                std::cout << "Digite o caminho da musica: " << std::endl;
+                std::cout << "Digite o nome do arquivo da musica: (nomedoarquivo.wav)" << std::endl;
                 std::cin >> caminho;
 
                 artista->publicar_musica(titulo, duracao_segundos, explicito, genero, artista, caminho);
@@ -454,29 +529,40 @@ void Controle::comptify(Artista *artista){
     }
 }
 
-void Controle::comptify(Usuario_Premium *premium){
+void Controle::comptify(Usuario_Premium *premium){ // usuário premium
     Playlist* playlist = nullptr;
+    std::string string;
     int opcao;
     int quantidade;
     while(true){
-        std::cout << "0 - Sair" << std::endl;
-        std::cout << "1 - Exibir perfil" << std::endl;
-        std::cout << "2 - Alterar nome" << std::endl;
-        std::cout << "3 - Alterar e-mail" << std::endl;
-        std::cout << "4 - Músicas curtidas" << std::endl;
-        std::cout << "5 - Artistas curtidos" << std::endl;
-        std::cout << "6 - Suas playlists" << std::endl;
-        std::cout << "7 - Playlists curtidas" << std::endl;
-        std::cout << "8 - Buscar música" << std::endl;
-        std::cout << "9 - Buscar artista" << std::endl;
-        std::cout << "10 - Buscar playlist" << std::endl;
-        std::cout << "11 - Buscar outro usuário" << std::endl;
-        std::cout << "12 - Criar playlist" << std::endl;
-        std::cout << "13 - Escutar músicas" << std::endl;
-        std::cout << "14 - Definir música de perfil" << std::endl;
+        while(true){
+            std::cout << "0 - Sair" << std::endl;
+            std::cout << "1 - Exibir perfil" << std::endl;
+            std::cout << "2 - Alterar nome" << std::endl;
+            std::cout << "3 - Alterar e-mail" << std::endl;
+            std::cout << "4 - Músicas curtidas" << std::endl;
+            std::cout << "5 - Artistas curtidos" << std::endl;
+            std::cout << "6 - Suas playlists" << std::endl;
+            std::cout << "7 - Playlists curtidas" << std::endl;
+            std::cout << "8 - Buscar música" << std::endl;
+            std::cout << "9 - Buscar artista" << std::endl;
+            std::cout << "10 - Buscar playlist" << std::endl;
+            std::cout << "11 - Buscar outro usuário" << std::endl;
+            std::cout << "12 - Criar playlist" << std::endl;
+            std::cout << "13 - Escutar músicas" << std::endl;
+            //opção exclusiva de premium
+            std::cout << "14 - Definir música de perfil" << std::endl;
 
-        std::cin >> opcao;
-        std::cout << std::endl;
+            std::cin >> string;
+            std::cout << std::endl;
+            try {
+                opcao = stoi(string);
+                break;
+            } catch (const std::invalid_argument& ia) {
+                std::cerr << "Erro: Digite um número" << std::endl;
+            }
+
+        }
 
         std::string entrada;
         char entrada_in[100];
@@ -534,10 +620,20 @@ void Controle::comptify(Usuario_Premium *premium){
                     while (true) {
                         int opcoes;
                         try {
-                            std::cout << "Deseja acessar alguma playlist?" << std::endl;
-                            std::cout << "1 - SIM " << std::endl;
-                            std::cout << "0 - NAO " << std::endl;
-                            std::cin >> opcoes;
+                            while(true){
+                                std::cout << "Deseja acessar alguma playlist?" << std::endl;
+                                std::cout << "1 - SIM " << std::endl;
+                                std::cout << "0 - NAO " << std::endl;
+                                std::cin >> string;
+                                std::cout << std::endl;
+                                try {
+                                    opcoes = stoi(string);
+                                    break;
+                                } catch (const std::invalid_argument& ia) {
+                                    std::cerr << "Erro: Digite um número" << std::endl;
+                                }
+
+                            }
 
                             if (opcoes == 0) {
                                 break;
@@ -556,8 +652,17 @@ void Controle::comptify(Usuario_Premium *premium){
                             case 0:
                                 break;
                             case 1: 
-                                std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
-                                std::cin >> opcoes;
+                                while(true){
+                                    std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
+                                    std::cin >> string;
+                                    std::cout << std::endl;
+                                    try {
+                                        opcoes = stoi(string);
+                                        break;
+                                    } catch (const std::invalid_argument& ia) {
+                                        std::cerr << "Erro: Digite um número" << std::endl;
+                                    }
+                                }
                                 opcoes--;
                                 Playlist* playlist = Playlist::encontrar_playlist(premium->get_playlist(opcoes)->get_nome());
                                 playlist->tocar_playlist(premium);
@@ -580,10 +685,19 @@ void Controle::comptify(Usuario_Premium *premium){
                     while (true) {
                         int opcoes;
                         try {
-                            std::cout << "Deseja acessar alguma playlist?" << std::endl;
-                            std::cout << "1 - SIM " << std::endl;
-                            std::cout << "0 - NAO " << std::endl;
-                            std::cin >> opcoes;
+                            while(true){
+                                std::cout << "Deseja acessar alguma playlist?" << std::endl;
+                                std::cout << "1 - SIM " << std::endl;
+                                std::cout << "0 - NAO " << std::endl;
+                                std::cin >> string;
+                                std::cout << std::endl;
+                                try {
+                                    opcoes = stoi(string);
+                                    break;
+                                } catch (const std::invalid_argument& ia) {
+                                    std::cerr << "Erro: Digite um número" << std::endl;
+                                }
+                            }
 
                             if (opcoes == 0) {
                                 break;
@@ -602,8 +716,18 @@ void Controle::comptify(Usuario_Premium *premium){
                             case 0:
                                 break;
                             case 1: 
-                                std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
-                                std::cin >> opcoes;
+                                while(true){
+                                    std::cout << "Digite o indice da playlist que deseja acessar: " << std::endl;
+                                    std::cin >> string;
+                                    std::cout << std::endl;
+                                    try {
+                                        opcoes = stoi(string);
+                                        break;
+                                    } catch (const std::invalid_argument& ia) {
+                                        std::cerr << "Erro: Digite um número" << std::endl;
+                                    }
+
+                                }
                                 opcoes--;
                                 Playlist* playlist = Playlist::encontrar_playlist(premium->get_playlist_curtida(opcoes)->get_nome());
                                 playlist->tocar_playlist(premium);
@@ -625,12 +749,22 @@ void Controle::comptify(Usuario_Premium *premium){
                     Musica* musica_procurada = Musica::encontrar_musica(entrada);
                     int escolher;
                     while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir música" << std::endl;
-                        std::cout << "2 - Ouvir música" << std::endl;
-                        std::cout << "3 - Descurtir música" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                        while(true){
+                            std::cout << "O que deseja fazer? " << std::endl;
+                            std::cout << "1 - Curtir música" << std::endl;
+                            std::cout << "2 - Ouvir música" << std::endl;
+                            std::cout << "3 - Descurtir música" << std::endl;
+                            std::cout << "4 - Voltar" << std::endl;
+                            std::cin >> string;
+                            std::cout << std::endl;
+                            try {
+                                escolher = stoi(string);
+                                break;
+                            } catch (const std::invalid_argument& ia) {
+                                std::cerr << "Erro: Digite um número" << std::endl;
+                            }
+
+                        }
                         switch (escolher){
                             case 1:
                                 premium->curtir_musica(musica_procurada);
@@ -664,12 +798,22 @@ void Controle::comptify(Usuario_Premium *premium){
                     Artista* artista_procurado = Artista::encontrar_artista(entrada);
                     int escolher;
                     while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir artista" << std::endl;
-                        std::cout << "2 - Ver perfil do artista" << std::endl;
-                        std::cout << "3 - Descurtir artista" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                        while(true){
+                            std::cout << "O que deseja fazer? " << std::endl;
+                            std::cout << "1 - Curtir artista" << std::endl;
+                            std::cout << "2 - Ver perfil do artista" << std::endl;
+                            std::cout << "3 - Descurtir artista" << std::endl;
+                            std::cout << "4 - Voltar" << std::endl;
+                            std::cin >> string;
+                            std::cout << std::endl;
+                            try {
+                                escolher = stoi(string);
+                                break;
+                            } catch (const std::invalid_argument& ia) {
+                                std::cerr << "Erro: Digite um número" << std::endl;
+                            }
+
+                        }
 
                         switch (escolher){
                             case 1:
@@ -708,12 +852,20 @@ void Controle::comptify(Usuario_Premium *premium){
 
                 while (true) {
                     int opcoes;
-
-                    std::cout << "O que deseja?" << std::endl;
-                    std::cout << "1 - Curtir playlist " << std::endl;
-                    std::cout << "2 - Descurtir playlist " << std::endl;
-                    std::cout << "0 - voltar " << std::endl;
-                    std::cin >> opcoes;
+                    while(true){
+                        std::cout << "O que deseja?" << std::endl;
+                        std::cout << "1 - Curtir playlist " << std::endl;
+                        std::cout << "2 - Descurtir playlist " << std::endl;
+                        std::cout << "0 - voltar " << std::endl;
+                        std::cin >> string;
+                            std::cout << std::endl;
+                            try {
+                                opcoes = stoi(string);
+                                break;
+                            } catch (const std::invalid_argument& ia) {
+                                std::cerr << "Erro: Digite um número" << std::endl;
+                            }
+                    }
 
                     if (opcoes == 0) {
                         break;
@@ -815,28 +967,40 @@ void Controle::comptify(Usuario_Premium *premium){
     }
 }
 
+//versão de usuário
 void Controle::comptify(Usuario *usuario){
     Playlist* playlist = nullptr;
+    std::string string;
     int opcao;
     int quantidade;
     while(true){
-        std::cout << "0 - Sair" << std::endl;
-        std::cout << "1 - Exibir perfil" << std::endl;
-        std::cout << "2 - Alterar nome" << std::endl;
-        std::cout << "3 - Alterar e-mail" << std::endl;
-        std::cout << "4 - Músicas curtidas" << std::endl;
-        std::cout << "5 - Artistas curtidos" << std::endl;
-        std::cout << "6 - Suas playlists" << std::endl;
-        std::cout << "7 - Playlists curtidas" << std::endl;
-        std::cout << "8 - Buscar música" << std::endl;
-        std::cout << "9 - Buscar artista" << std::endl;
-        std::cout << "10 - Buscar playlist" << std::endl;
-        std::cout << "11 - Buscar outro usuário" << std::endl;
-        std::cout << "12 - Criar playlist" << std::endl;
-        std::cout << "13 - Escutar músicas" << std::endl;
+        while(true){
+            std::cout << "0 - Sair" << std::endl;
+            std::cout << "1 - Exibir perfil" << std::endl;
+            std::cout << "2 - Alterar nome" << std::endl;
+            std::cout << "3 - Alterar e-mail" << std::endl;
+            std::cout << "4 - Músicas curtidas" << std::endl;
+            std::cout << "5 - Artistas curtidos" << std::endl;
+            std::cout << "6 - Suas playlists" << std::endl;
+            std::cout << "7 - Playlists curtidas" << std::endl;
+            std::cout << "8 - Buscar música" << std::endl;
+            std::cout << "9 - Buscar artista" << std::endl;
+            std::cout << "10 - Buscar playlist" << std::endl;
+            std::cout << "11 - Buscar outro usuário" << std::endl;
+            std::cout << "12 - Criar playlist" << std::endl;
+            std::cout << "13 - Escutar músicas" << std::endl;
+            
+            std::cin >> string;
+            std::cout << std::endl;
+            try {
+                opcao = stoi(string); //força o usuário a digitar um número
+                break;
+            } catch (const std::invalid_argument& ia) {
+                std::cerr << "Erro: Digite um número" << std::endl;
+            }
+
+        }
         
-        std::cin >> opcao;
-        std::cout << std::endl;
         char entrada_in[100];
         std::string entrada;
         int indice;
@@ -983,12 +1147,22 @@ void Controle::comptify(Usuario *usuario){
                     Musica* musica_procurada = Musica::encontrar_musica(entrada);
                     int escolher;
                     while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir música" << std::endl;
-                        std::cout << "2 - Ouvir música" << std::endl;
-                        std::cout << "3 - Descurtir música" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                        while (true){
+                            std::cout << "O que deseja fazer? " << std::endl;
+                            std::cout << "1 - Curtir música" << std::endl;
+                            std::cout << "2 - Ouvir música" << std::endl;
+                            std::cout << "3 - Descurtir música" << std::endl;
+                            std::cout << "4 - Voltar" << std::endl;
+                            std::cin >> string;
+                            std::cout << std::endl;
+                            try {
+                                escolher = stoi(string);
+                                break;
+                            } catch (const std::invalid_argument& ia) {
+                                std::cerr << "Erro: Digite um número" << std::endl;
+                            }
+
+                        }
                         switch (escolher){
                             case 1:
                                 usuario->curtir_musica(musica_procurada);
@@ -1022,12 +1196,22 @@ void Controle::comptify(Usuario *usuario){
                     Artista* artista_procurado = Artista::encontrar_artista(entrada);
                     int escolher;
                     while(true){
-                        std::cout << "O que deseja fazer? " << std::endl;
-                        std::cout << "1 - Curtir artista" << std::endl;
-                        std::cout << "2 - Ver perfil do artista" << std::endl;
-                        std::cout << "3 - Descurtir artista" << std::endl;
-                        std::cout << "4 - Voltar" << std::endl;
-                        std::cin >> escolher;
+                        while(true){
+                            std::cout << "O que deseja fazer? " << std::endl;
+                            std::cout << "1 - Curtir artista" << std::endl;
+                            std::cout << "2 - Ver perfil do artista" << std::endl;
+                            std::cout << "3 - Descurtir artista" << std::endl;
+                            std::cout << "4 - Voltar" << std::endl;
+                            std::cin >> string;
+                            std::cout << std::endl;
+                            try {
+                                escolher = stoi(string);
+                                break;
+                            } catch (const std::invalid_argument& ia) {
+                                std::cerr << "Erro: Digite um número" << std::endl;
+                            }
+
+                        }
 
                         switch (escolher){
                             case 1:
@@ -1066,12 +1250,20 @@ void Controle::comptify(Usuario *usuario){
 
                 while (true) {
                     int opcoes;
-
-                    std::cout << "O que deseja?" << std::endl;
-                    std::cout << "1 - Curtir playlist " << std::endl;
-                    std::cout << "2 - Descurtir playlist " << std::endl;
-                    std::cout << "0 - voltar " << std::endl;
-                    std::cin >> opcoes;
+                    while(true){
+                        std::cout << "O que deseja?" << std::endl;
+                        std::cout << "1 - Curtir playlist " << std::endl;
+                        std::cout << "2 - Descurtir playlist " << std::endl;
+                        std::cout << "0 - voltar " << std::endl;
+                        std::cin >> string;
+                            std::cout << std::endl;
+                            try {
+                                opcoes = stoi(string);
+                                break;
+                            } catch (const std::invalid_argument& ia) {
+                                std::cerr << "Erro: Digite um número" << std::endl;
+                            }
+                    }
 
                     if (opcoes == 0) {
                         break;

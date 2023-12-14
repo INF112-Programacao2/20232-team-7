@@ -92,7 +92,7 @@ void Musica::tocar_musica(){
 
     //mantém o programa em execução enquanto estiver tocando
     while (som.getStatus() == sf::Music::Playing) {
-        if (!som.getStatus() == sf::Music::Playing){ //para quando a musica para
+        if (!(som.getStatus() == sf::Music::Playing)){ //para quando a musica para
             return;
         }
         char opcao;
