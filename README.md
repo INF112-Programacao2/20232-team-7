@@ -13,12 +13,10 @@
 <p>O Computify não é apenas um aplicativo de reprodução de som, é uma plataforma que valoriza a descoberta musical, a conexão entre os amantes da música e o apoio aos artistas emergentes. Descubra novas músicas, conecte-se com artistas e mergulhe em uma comunidade musical inovadora com o Computify, onde a paixão pela música encontra a inovação tecnológica. Sintonize-se para uma experiência musical como nenhuma outra!</p>
 
 <h2>Compilação e Execução</h2>
-<h3>Pré-requisitos<h3>
-<p><b>Sistema Operacional:</b>Este programa foi todo desenvolvido em ambiente Linux, pensando justamente para que ele funcione nesses sistemas. Não é garantida compatibilidade com sistemas 
-Windows e MacOS.</p>
-<p><b>SFML:</b> O programa depende da instalação da biblioteca SFML. Caso não a tenha instalado ainda,
-é possível usando o seguinte comando no terminal:</p>
-    <code>sudo apt-get install libsfml-dev</code>
+<h3>Pré-requisitos</h3>
+<p><b>Sistema Operacional:</b> Este programa é compatível apenas com sistemas Linux. Não é garantida a compatibilidade com sistemas Windows e MacOS.</p>
+<p><b>SFML:</b> Certifique-se de ter a biblioteca SFML instalada. Você pode instalá-la usando o seguinte comando no terminal:</p>
+<code>sudo apt-get install libsfml-dev</code>
 <p>Lembrando que para executar esse comando é necessário ser um usuário root do sitema linux.</p>
 <p>Em caso de dúvidas, você pode também consultar <a href="https://www.sfml-dev.org/tutorials/2.6/">este tutorial</a>!</p>
 
