@@ -12,8 +12,32 @@
 <h2>O Futuro da Música Está nas Suas Mãos:</h2>
 <p>O Computify não é apenas um aplicativo de reprodução de som, é uma plataforma que valoriza a descoberta musical, a conexão entre os amantes da música e o apoio aos artistas emergentes. Descubra novas músicas, conecte-se com artistas e mergulhe em uma comunidade musical inovadora com o Computify, onde a paixão pela música encontra a inovação tecnológica. Sintonize-se para uma experiência musical como nenhuma outra!</p>
 
-<h2>Como instalar o SFML e utilizar a plataforma?</h2>
-<p><b>Baixe o SFML:</b> Linux: <a href="https://www.sfml-dev.org/tutorials/2.6/">Tutorial aqui!</a>        Windows: <a href="https://www.youtube.com/watch?v=4fcTqmT0Hhg&t=234s&ab_channel=Tuffle">Tutorial aqui!</a></p>
+<h2>Compilação e Execução</h2>
+<h3>Pré-requisitos<h3>
+<p><b>Sistema Operacional:</b>Este programa foi todo desenvolvido em ambiente Linux, pensando justamente para que ele funcione nesses sistemas. Não é garantida compatibilidade com sistemas 
+Windows e MacOS.</p>
+<p><b>SFML:</b> O programa depende da instalação da biblioteca SFML. Caso não a tenha instalado ainda,
+é possível usando o seguinte comando no terminal:</p>
+    <code>sudo apt-get install libsfml-dev</code>
+<p>Lembrando que para executar esse comando é necessário ser um usuário root do sitema linux.</p>
+<p>Em caso de dúvidas, você pode também consultar <a href="https://www.sfml-dev.org/tutorials/2.6/">este tutorial</a>!</p>
+
+<h3>Compilação</h3>
+<ol>
+  <li>Clone o repositório para o seu ambiente local.</li>
+  <code>git clone https://github.com/INF112-Programacao2/20232-team-7.git</code>
+
+  <li>Navegue até o diretório do projeto.</li>
+  <code>cd 20232-tean-7</code>
+
+  <li>Execute o Makefile para compilar o programa.</li>
+  <code>make</code>
+</ol>
+
+<h3>Execução</h3>
+<p>Depois de compilar o programa com sucesso, você pode executá-lo usando o seguinte comando:</p>
+<code>./comptify</code>
+
 <p>Para utilizar a plataforma basta navegar pelas opções através de um menu iterativo.</p>
 
 <h2>Integrantes do grupo:</h2>
