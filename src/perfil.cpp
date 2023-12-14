@@ -336,7 +336,8 @@ void Perfil::exibir_usuario(Usuario* usuario_visualizador){
     //mantém o programa em execução enquanto estiver tocando
     while (true) {
         while (true) {
-            std::string opcao;
+            std::string string;
+            int opcao;
             std::cout << "Nome de usuario: " << this-> get_usuario()->get_nome() << std::endl;
             std::cout << "E-mail: " << this-> get_usuario()->get_email() << std::endl;
             std::cout << "Seguidores: " << this-> get_quant_seguidores() << std::endl;
@@ -359,22 +360,25 @@ void Perfil::exibir_usuario(Usuario* usuario_visualizador){
 
             while (true) {
                 try {
-                    std::cin >> opcao;
-
-                    if (std::stoi(opcao) == 0) {
-                        opcao = "0";
-                        break;
-                    }
-
-                    int tamanho = opcao.size();
-                    for (int i = 0; i < tamanho; i++) {
-                        if (!isdigit(opcao[i])) {
-                            throw std::invalid_argument("Opcao invalida. Digite novamente!");
+                    while (true)
+                    {
+                        std::cin >> string;
+                        try {
+                            opcao = stoi(string);
                             break;
+                        } catch (std::invalid_argument &e){
+                            std::cerr << "Erro: digite um número" << std::endl;
                         }
                     }
+                    
+
+                    if (opcao == 0) {
+                        opcao = 0;
+                        break;
+                    }
+                    
                
-                    if (std::stoi(opcao) < 0 || std::stoi(opcao) > 7) {
+                    if (opcao < 0 || opcao > 7) {
                         throw std::invalid_argument("Opcao invalida. Digite novamente!");
                     }
 
@@ -385,7 +389,7 @@ void Perfil::exibir_usuario(Usuario* usuario_visualizador){
                 }
             }
 
-            switch (std::stoi(opcao)) {
+            switch (opcao) {
                 case 0: 
                     break;
                 case 1: 
@@ -428,7 +432,7 @@ void Perfil::exibir_usuario(Usuario* usuario_visualizador){
                         break;
             }
 
-            if (std::stoi(opcao) == 0) {
+            if (opcao == 0) {
                 return;
             }
             
